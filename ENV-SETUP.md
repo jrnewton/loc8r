@@ -1,5 +1,7 @@
 # Dev Environment Setup
-
+* configure git name and email
+  * git config --global user.email "rocketnewton@gmail.com"
+  * git config --global user.name "Jon Newton"
 * add public key to github 
 * clone the code - git clone git@github.com:rocketnewton/tla.git
 * sudo apt install nodejs
