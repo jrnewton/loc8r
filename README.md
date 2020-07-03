@@ -1,4 +1,4 @@
-# tla
-Todo List App
+# MEAN Wifi Demo App
+Following the "Getting MEAN" book from Manning. 
 
-Live demo: http://list0.herokuapp.com/
+Live demo: http://meanwifi.herokuapp.com/
