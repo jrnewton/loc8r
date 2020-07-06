@@ -1,6 +1,6 @@
 const homeList = (req, res) => { 
   /* index is index.hbs which is rendered inside of layout.hbs */
-  res.render('index', { title: 'Home' });
+  res.render('locations-list', { title: 'Home' });
 };
 
 const locationInfo = (req, res) => { 
