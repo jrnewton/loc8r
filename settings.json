@@ -1,0 +1,26 @@
+{
+	//basic VS Code settings for the meanwifi project. 
+	//I'm developing on several machines, so 
+	//stashing settings in the git repo itself. 
+	"editor.tabSize": 2,
+	"editor.insertSpaces": true,
+	"editor.suggestSelection": "first",
+	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+	"terminal.integrated.commandsToSkipShell": [
+		"-workbench.action.togglePanel"
+	],
+	"extensions.ignoreRecommendations": false,
+	"editor.minimap.enabled": true,
+	"workbench.editor.highlightModifiedTabs": true,
+	"grunt.autoDetect": "off",
+	"gulp.autoDetect": "off",
+	"workbench.editor.enablePreview": false,
+	"window.openFilesInNewWindow": "on",
+	"window.openFoldersInNewWindow": "on",
+	"explorer.enableDragAndDrop": false,
+	"editor.accessibilitySupport": "off",
+	"workbench.settings.editor": "json", 
+	"window.restoreWindows": "none", 
+	"files.hotExit": "off",
+	"problems.showCurrentInStatus": true,
+}
