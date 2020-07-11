@@ -3,6 +3,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const hbs = require('hbs');
+
+hbs.registerHelper('rating', function(count, options) { 
+  return count;
+});
 
 const indexRouter = require('./app_server/routes/index');
 
