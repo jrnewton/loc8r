@@ -2,80 +2,34 @@
 
 <div class="row banner">
 	<div class="col-12">
-		<h1>Loc8r
-		<small> Find places to work with wifi near you!</small>
+		<h1>{{pageHeader.title}}
+		<small>{{pageHeader.tagline}}</small>
 		</h1>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-12 col-md-8">
-		<div class="card">
-			<div class="card-block">
-				<h4><a href="/location">Starcups</a>
-					<small>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="far fa-star"></i>
-						<i class="far fa-star"></i>
-					</small>
-					<span class="badge badge-pill badge-default float-right">100m</span>
-				</h4>
-				<p class="address">
-					125 High Street, Reading, RG6 1PS
-				</p>
-				<div class="facilities">
-					<span class="badge badge-warning">Hot drinks</span>
-					<span class="badge badge-warning">Food</span>
-					<span class="badge badge-warning">Premium wifi</span>
+		{{#each locations}}
+			<div class="card">
+				<div class="card-block">
+					<h4><a href="/location">{{this.name}}</a>
+						<small>
+							<i class="fas fa-star"></i>
+						</small>
+						<span class="badge badge-pill badge-default float-right">100m</span>
+					</h4>
+					<p class="address">
+						125 High Street, Reading, RG6 1PS
+					</p>
+					<div class="facilities">
+						<span class="badge badge-warning">Hot drinks</span>
+						<span class="badge badge-warning">Food</span>
+						<span class="badge badge-warning">Premium wifi</span>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="card">
-			<div class="card-block">
-				<h4><a href="/location">Cafe Hero</a>
-					<small>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="far fa-star"></i>
-					</small>
-					<span class="badge badge-pill badge-default float-right">200m</span>
-				</h4>
-				<p class="address">
-					125 High Street, Reading, RG6 1PS
-				</p>
-				<div class="facilities">
-					<span class="badge badge-warning">Hot drinks</span>
-					<span class="badge badge-warning">Food</span>
-					<span class="badge badge-warning">Premium wifi</span>
-				</div>
-			</div>
-		</div>
-		<div class="card">
-			<div class="card-block">
-				<h4><a href="/location">Burger Queen</a>
-					<small>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="far fa-star"></i>
-						<i class="far fa-star"></i>
-						<i class="far fa-star"></i>
-					</small>
-					<span class="badge badge-pill badge-default float-right">500m</span>
-				</h4>
-				<p class="address">
-					125 High Street, Reading, RG6 1PS
-				</p>
-				<div class="facilities">
-					<span class="badge badge-warning">Hot drinks</span>
-					<span class="badge badge-warning">Food</span>
-					<span class="badge badge-warning">Premium wifi</span>
-				</div>
-			</div>
-		</div>
+		{{/each}}
 	</div>
 	<div class="col-12 col-md-4">
 		<p class="lead">Loc8r helps you find places to work when out and about.</p>
