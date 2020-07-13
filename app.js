@@ -3,8 +3,20 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
 const indexRouter = require('./app_server/routes/index');
+
+const hbs = require('hbs');
+
+hbs.registerHelper('subtract', function(num1, num2) { 
+  return num1 - num2;
+});
+
+hbs.registerHelper('times', function(count, options) { 
+  var accum = '';
+  for(var i = 0; i < count; i++)
+    accum += options.fn(i);
+  return accum;
+});
 
 const app = express();
 
