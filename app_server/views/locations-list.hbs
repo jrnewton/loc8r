@@ -15,7 +15,13 @@
 				<div class="card-block">
 					<h4><a href="/location">{{this.name}}</a>
 						<small>
-							<i class="fas fa-star"></i>
+							{{#times this.rating}}
+								<i class="fas fa-star"></i>
+							{{/times}}
+
+							{{#times (subtract 5 this.rating)}}
+								<i class="far fa-star"></i>
+							{{/times}}
 						</small>
 						<span class="badge badge-pill badge-default float-right">{{this.distance}}</span>
 					</h4>
