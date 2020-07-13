@@ -17,15 +17,13 @@
 						<small>
 							<i class="fas fa-star"></i>
 						</small>
-						<span class="badge badge-pill badge-default float-right">100m</span>
+						<span class="badge badge-pill badge-default float-right">{{this.distance}}</span>
 					</h4>
-					<p class="address">
-						125 High Street, Reading, RG6 1PS
-					</p>
+					<p class="address">{{this.address}}</p>
 					<div class="facilities">
-						<span class="badge badge-warning">Hot drinks</span>
-						<span class="badge badge-warning">Food</span>
-						<span class="badge badge-warning">Premium wifi</span>
+						{{#each this.facilities}}
+							<span class="badge badge-warning">{{this}}</span>
+						{{/each}}
 					</div>
 				</div>
 			</div>
