@@ -14,21 +14,21 @@ const homeList = (req, res) => {
           name: 'Starcups',
           address: '125 High Street, Reading, RG6 1PS',
           rating: 3,
-          facilities: ['Hot drinks', 'Food', 'Premium wifi'], 
+          facilities: ['Hot drinks', 'Cold Drinks', 'Premium wifi'], 
           distance: '100m'
         },
         {
           name: 'Cafe Hero',
-          address: '125 High Street, Reading, RG6 1PS',
+          address: '12 Main Street, Reading, RG6 1PS',
           rating: 4,
-          facilities: ['Hot drinks', 'Food', 'Premium wifi'], 
+          facilities: ['Books', 'Food', 'Premium wifi'], 
           distance: '200m'
         },
         {
           name: 'Burger Queen',
-          address: '125 High Street, Reading, RG6 1PS',
+          address: '1875 Lord Tennis Blvd, Reading, RG6 1PS',
           rating: 2,
-          facilities: ['Hot drinks', 'Food', 'Premium wifi'], 
+          facilities: ['Food', 'Premium wifi'], 
           distance: '500m'
         },
       ]
