@@ -1,15 +1,13 @@
+'use strict';
+
+const model = require("../model/model.js");
+
 const about = (req, res) => { 
-  res.render('about', { 
-    title: 'About', 
-    pageHeader: { 
-      title: 'About', 
-      tagline: 'Loc8r was created to help people find places to sit down and get a bit of work done.'
-    } 
-  });
+  res.render('about', model.about);
 }
 
 const test = (req, res) => { 
-  res.render('test', { title: 'Test' });
+  res.render('test', model.test);
 }
 
 module.exports = {

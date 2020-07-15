@@ -5,15 +5,12 @@
 	"editor.tabSize": 2,
 	"editor.insertSpaces": true,
 	"editor.suggestSelection": "first",
-	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
 	"terminal.integrated.commandsToSkipShell": [
 		"-workbench.action.togglePanel"
 	],
 	"extensions.ignoreRecommendations": false,
 	"editor.minimap.enabled": true,
 	"workbench.editor.highlightModifiedTabs": true,
-	"grunt.autoDetect": "off",
-	"gulp.autoDetect": "off",
 	"workbench.editor.enablePreview": false,
 	"window.openFilesInNewWindow": "on",
 	"window.openFoldersInNewWindow": "on",
@@ -23,4 +20,5 @@
 	"window.restoreWindows": "none", 
 	"files.hotExit": "off",
 	"problems.showCurrentInStatus": true,
+	"files.autoSave": "afterDelay"
 }
