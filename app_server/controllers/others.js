@@ -1,3 +1,5 @@
+'use strict';
+
 const model = require("../model/model.js");
 
 const about = (req, res) => { 
