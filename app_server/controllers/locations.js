@@ -1,3 +1,5 @@
+'use strict';
+
 const model = require("../model/model.js");
 
 const homeList = (req, res) => { 
@@ -17,22 +19,29 @@ const homeList = (req, res) => {
 };
 
 const locationInfo = (req, res) => { 
-  if (req.query.id) { 
-    console.log('path=' + req.path + '; query id=' + req.query.id);
-    const location = model.locations[req.query.id];
-    res.render('location-info', { 
-      title: 'Loc8r - Location Info - ' + location.name, 
-      pageHeader: 
-      {
-        title: 'Loc8r',
-        tagline: 'Find places to work with wifi near you!'
-      },
-      location: location
-    });
+  const locationId = req.query.id;
+  if (locationId) { 
+    console.log(`path=${req.path}; location id=${locationId}`);
+    const location = model.locations[locationId];
+    if (location) { 
+      res.render('location-info', { 
+        title: 'Loc8r - Location Info - ' + location.name, 
+        pageHeader: 
+        {
+          title: 'Loc8r',
+          tagline: 'Find places to work with wifi near you!'
+        },
+        location: location
+      });
+    }
+    else {
+      console.log(`path=${req.path}; location id ${locationId} not found`);
+      res.status(404).send(`Location id ${locationId} not found`);
+    }
   }
   else { 
-    console.log('path=' + req.path + '; query id not found');
-    res.status(418).send('Short and stout');
+    console.log(`path=${req.path}; missing location id`);
+    res.status(404).send('Location id required');
   }
 }
 
