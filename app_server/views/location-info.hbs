@@ -59,12 +59,14 @@
 							<div class="row review">
 							<div class="col-12 no-gutters review-header">
 								<span class="rating">
-									<small>&nbsp;
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
+									<small>
+										{{#times this.rating}}
+											<i class="fas fa-star"></i>
+										{{/times}}
+
+										{{#times (subtract 5 this.rating)}}
+											<i class="far fa-star"></i>
+										{{/times}}
 									</small>
 								</span>
 								<span class="reviewAuthor">{{this.author}}</span>
