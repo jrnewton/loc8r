@@ -6,6 +6,7 @@ const logger = require('morgan');
 const indexRouter = require('./app_server/routes/index');
 
 const hbs = require('hbs');
+require('./app_server/models/db');
 
 hbs.registerHelper('subtract', function(num1, num2) { 
   return num1 - num2;
