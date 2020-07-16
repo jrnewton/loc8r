@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
 
 const dbURI = 'mongodb://localhost/loc8r';
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+const modelDB = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connection.on('connected', () => {
-  console.log(`Mongoose connected to ${dbURI}`);
+modelDB.on('connected', () => {
+  console.log(`[${dbURI}] Mongoose connected`);
 });
 
-mongoose.connection.on('error', err => {
-  console.log('Mongoose connection error:', err);
+modelDB.on('error', err => {
+  console.log(`[${dbURI}] Mongoose connection error:`, err);
 });
 
-mongoose.connection.on('disconnected', () => {
-  console.log('Mongoose disconnected');
+modelDB.on('disconnected', () => {
+  console.log(`[${dbURI}] Mongoose disconnected`);
 });
 
 const shutdown = (msg, callback) => { 
-  mongoose.connection.close( () => {
-    console.log(`Mongoose disconnected through ${msg}`);
+  modelDB.close( () => {
+    console.log(`[${dbURI}] Mongoose disconnected through ${msg}`);
     callback();
   });
 };
