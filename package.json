@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "lint": "eslint .",
+    "start": "node ./bin/www",
+    "dev": "nodemon --exec \"npm run lint && node ./bin/www\""
   },
   "engines": {
     "node": ">=12.0.0",
@@ -17,5 +19,9 @@
     "http-errors": "1.6.3",
     "mongoose": "5.9.24",
     "morgan": "1.9.1"
+  },
+  "devDependencies": {
+    "eslint": "7.4.0",
+    "nodemon": "2.0.4"
   }
 }
