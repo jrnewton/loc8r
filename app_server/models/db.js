@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const locations = require('./locations');
+require('./locations');
 
 const dbURI = 'mongodb://localhost/loc8r';
 const modelDB = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
