@@ -20,5 +20,5 @@
 	"window.restoreWindows": "none", 
 	"files.hotExit": "off",
 	"problems.showCurrentInStatus": true,
-	"files.autoSave": "afterDelay"
+	"workbench.colorTheme": "Monokai Dimmed",
 }
