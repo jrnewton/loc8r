@@ -5,8 +5,8 @@ const openingTimeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  opening: String,
-  closing: String,
+  openingTime: String,
+  closingTime: String,
   closed: {
     type: Boolean,
     required: true
@@ -22,11 +22,12 @@ const reviewSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  date: { 
-    type: Number,
+  createdOn: { 
+    type: Date, 
+    default: Date.now,
     required: true
   },
-  text: { 
+  reviewText: { 
     type: Number,
     required: true
   }
@@ -43,13 +44,20 @@ const locationSchema = new mongoose.Schema({
   },
   reviewLead: String,
   coords: {
-    type: String, 
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
     /* To meet the GeoJSON specification, a coordinate pair must be entered
        into the array in the correct order: longitude, then latitude. Valid longitude
        values range from -180 to 180, whereas valid latitude values range from -90 to
        90. 
     */
-    coordinates: [Number]
+    coordinates: {
+      type: [Number],
+      default: [0, 0],
+    }
   },
   rating: { 
     type: Number,
@@ -65,4 +73,4 @@ const locationSchema = new mongoose.Schema({
 
 locationSchema.index({coords: '2dsphere'});
 
-mongoose.model(/* model name */ 'Location', /* schema, duh */ locationSchema, /* collection name (optional) */ 'locations');
+mongoose.model(/* model name */ 'Location', /* schema */ locationSchema, /* collection name (optional) */ 'locations');
