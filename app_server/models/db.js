@@ -1,23 +1,31 @@
 const mongoose = require('mongoose');
-require('./locations');
+const schema = require('./locations');
 
 const dbURI = 'mongodb://localhost/loc8r';
-const modelDB = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-modelDB.on('connected', () => {
+conn.on('connected', () => {
   console.log(`[${dbURI}] Mongoose connected`);
+  
+  const Location = conn.model('Location', schema.location, 'locations');
+
+  Location.find(function (err, res) {
+    if (err) return console.error(err);
+    console.log('found these locations:');
+    console.log(res);
+  });
 });
 
-modelDB.on('error', err => {
+conn.on('error', err => {
   console.log(`[${dbURI}] Mongoose connection error:`, err);
 });
 
-modelDB.on('disconnected', () => {
+conn.on('disconnected', () => {
   console.log(`[${dbURI}] Mongoose disconnected`);
 });
 
 const shutdown = (msg, callback) => { 
-  modelDB.close( () => {
+  conn.close( () => {
     console.log(`[${dbURI}] Mongoose disconnected through ${msg}`);
     callback();
   });

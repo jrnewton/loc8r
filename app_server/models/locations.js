@@ -73,7 +73,10 @@ const locationSchema = new mongoose.Schema({
 
 locationSchema.index({coords: '2dsphere'});
 
-const model = mongoose.model(/* model name */ 'Location', /* schema */ locationSchema, /* collection name (optional) */ 'locations');
-module.exports = { 
-  model
-};
+/*
+  If you use multiple connections, you should make sure you export schemas, not models. 
+  Exporting a model from a file is called the export model pattern. 
+  The export model pattern is limited because you can only use one connection.
+  https://mongoosejs.com/docs/connections.html
+*/
+module.exports.location = locationSchema;
