@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node ./bin/www",
+    "show-node-procs": "ps -ef | grep \"node \" | grep -v \"grep\"",
     "dev": "nodemon --exec \"npm run lint && node ./bin/www\"",
     "db-start": "sudo systemctl start mongod && sudo systemctl status mongod",
     "db-stop": "sudo systemctl stop mongod && sudo systemctl status mongod",
