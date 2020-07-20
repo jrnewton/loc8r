@@ -73,4 +73,7 @@ const locationSchema = new mongoose.Schema({
 
 locationSchema.index({coords: '2dsphere'});
 
-mongoose.model(/* model name */ 'Location', /* schema */ locationSchema, /* collection name (optional) */ 'locations');
+const model = mongoose.model(/* model name */ 'Location', /* schema */ locationSchema, /* collection name (optional) */ 'locations');
+module.exports = { 
+  model
+};
