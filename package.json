@@ -9,7 +9,9 @@
     "dev": "nodemon --exec \"npm run lint && node ./bin/www\"",
     "db-start": "sudo systemctl start mongod && sudo systemctl status mongod",
     "db-stop": "sudo systemctl stop mongod && sudo systemctl status mongod",
-    "db-status": "sudo systemctl status mongod"
+    "db-status": "sudo systemctl status mongod",
+    "prod-restart": "heroku restart -a meanwifi",
+    "prod-log-tail": "heroku logs -tail -a meanwifi"
   },
   "engines": {
     "node": ">=12.0.0",
