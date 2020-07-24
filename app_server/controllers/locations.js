@@ -31,7 +31,8 @@ const locationInfo = (req, res) => {
           title: 'Loc8r',
           tagline: 'Find places to work with wifi near you!'
         },
-        location: location
+        location: location, 
+        gsm_key: process.env.GSM_KEY
       });
     }
     else {
