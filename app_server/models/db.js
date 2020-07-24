@@ -7,6 +7,12 @@ if (process.env.NODE_ENV === 'production') {
   dbURI = process.env.MONGODB_URI;
 }
 
+//Note to self
+//I wanted to restrict my Mongodb Atlas cluster to a whitelist IP list but
+//with heroku free-tier that requires using a socks proxy but 
+//mongoose/mongo does not currently support that type of connection but
+//there IS a ticket filed (see https://jira.mongodb.org/browse/CSHARP-734)
+//but sadly no real progress is has been made...
 const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 conn.on('connected', () => {
