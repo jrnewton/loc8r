@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const schema = require('./locations');
 
-const dbURI = 'mongodb://localhost/loc8r';
+console.log(`NODE_ENV=${process.env.NODE_ENV}`);
+let dbURI = 'mongodb://localhost/loc8r';
+if (process.env.NODE_ENV === 'production') { 
+  dbURI = process.env.MONGODB_URI;
+}
+
 const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 conn.on('connected', () => {
