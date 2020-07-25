@@ -1,30 +1,4 @@
 {
-	//basic VS Code settings for this project. 
-	//I'm developing on several machines, so 
-	//stashing settings in the git repo itself.
 	"editor.tabSize": 2,
-	"editor.insertSpaces": true,
-	"editor.suggestSelection": "first",
-	//togglePanel key conflicts with bash history/readline (CTRL-J) that jumps to history entry
-	//I still find togglePanel useful so I'll try to train myself to use CTRL-[, the alt to CTRL-J
-	//in readline. 
-	//
-	// "terminal.integrated.commandsToSkipShell": [
-	// 	"-workbench.action.togglePanel"
-	// ],
-	"extensions.ignoreRecommendations": false,
-	"editor.minimap.enabled": true,
-	"workbench.editor.highlightModifiedTabs": true,
-	"workbench.editor.enablePreview": false,
-	"explorer.enableDragAndDrop": false,
-	"editor.accessibilitySupport": "off",
-	"workbench.settings.editor": "json", 
-	"problems.showCurrentInStatus": true,
-	"workbench.colorTheme": "Monokai Dimmed",
-
-	//User settings.  Copy to $HOME/.config/Code/User/settings.json
-	"window.restoreWindows": "none",
-	"files.hotExit": "off",
-	"window.openFilesInNewWindow": "on",
-	"window.openFoldersInNewWindow": "on",
+	"editor.insertSpaces": true
 }
