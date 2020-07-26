@@ -18,13 +18,13 @@ const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifie
 conn.on('connected', () => {
   console.log(`[${dbURI}] Mongoose connected`);
   
-  const Location = conn.model('Location', schema.location, 'locations');
-
-  Location.find(function (err, res) {
-    if (err) return console.error(err);
-    console.log('found these locations:');
-    console.log(res);
-  });
+  // const Location = conn.model('Location', schema.location, 'locations');
+  //
+  // Location.find(function (err, res) {
+  //   if (err) return console.error(err);
+  //   console.log('found these locations:');
+  //   console.log(res);
+  // });
 });
 
 conn.on('error', err => {

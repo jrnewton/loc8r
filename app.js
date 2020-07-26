@@ -6,9 +6,9 @@ const favicon = require('serve-favicon')
 const logger = require('morgan');
 const indexRouter = require('./app_server/routes/index');
 const apiRouter = require('./app_api/routes/index');
+require('./app_api/models/db');
 
 const hbs = require('hbs');
-require('./app_server/models/db');
 
 hbs.registerHelper('subtract', function(num1, num2) { 
   return num1 - num2;

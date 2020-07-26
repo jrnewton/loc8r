@@ -1,6 +1,6 @@
 'use strict';
 
-const model = require("../models/static.js");
+const model = require("../../app_api/models/static.js");
 
 const about = (req, res) => { 
   res.render('about', model.about);

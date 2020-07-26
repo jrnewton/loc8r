@@ -1,6 +1,6 @@
 'use strict';
 
-const model = require("../models/static.js");
+const model = require("../../app_api/models/static.js");
 
 const homeList = (req, res) => { 
   /* locations-list is locations-list.hbs which is rendered inside of layout.hbs */
