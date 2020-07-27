@@ -79,4 +79,4 @@ locationSchema.index({coords: '2dsphere'});
   The export model pattern is limited because you can only use one connection.
   https://mongoosejs.com/docs/connections.html
 */
-module.exports.location = locationSchema;
+module.exports.schema = locationSchema;

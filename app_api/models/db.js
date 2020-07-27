@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const schema = require('./locations');
 
 console.log(`NODE_ENV=${process.env.NODE_ENV}`);
 let dbURI = 'mongodb://localhost/loc8r';
@@ -14,17 +13,8 @@ if (process.env.NODE_ENV === 'production') {
 //there IS a ticket filed (see https://jira.mongodb.org/browse/CSHARP-734)
 //but sadly no real progress is has been made...
 const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
-
 conn.on('connected', () => {
   console.log(`[${dbURI}] Mongoose connected`);
-  
-  // const Location = conn.model('Location', schema.location, 'locations');
-  //
-  // Location.find(function (err, res) {
-  //   if (err) return console.error(err);
-  //   console.log('found these locations:');
-  //   console.log(res);
-  // });
 });
 
 conn.on('error', err => {
@@ -59,3 +49,25 @@ process.on('SIGTERM', () => {
     process.exit(0);
   });
 });
+
+const locations = require('./locations');
+
+const getLocationModel = async function() { 
+  console.log('Waiting for a ready connection');
+  await conn;
+  console.log('Got a ready connection');
+  const Location = conn.model('Location', locations.schema, 'locations');
+  return Location;
+};
+
+module.exports.Location = getLocationModel;
+
+// const readyModel = new Promise( (resolve, reject) => { 
+//   conn.on('connected', () => {
+//     console.log(`[${dbURI}] Mongoose connected`);
+//     const Location = conn.model('Location', schema.location, 'locations');
+//     resolve(Location);
+//   });
+// });
+
+// module.exports.model = readyModel;
