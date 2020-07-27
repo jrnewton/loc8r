@@ -13,6 +13,15 @@
     "prod-restart": "heroku restart -a meanwifi",
     "prod-log-tail": "heroku logs -tail -a meanwifi"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rocketnewton/meanwifi.git"
+  },
+  "author": "Jon Newton",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/rocketnewton/meanwifi/issues"
+  },
   "engines": {
     "node": ">=12.0.0",
     "npm": ">=6.14.0"
