@@ -12,8 +12,10 @@ module.exports = {
         "ecmaVersion": 11
     },
     "rules": {
+        "strict": [2, "global"]
     },
     "ignorePatterns": [
-        "public/javascripts/*.js" /* third party stuff */
+        "public/javascripts/*.js" /* third party stuff */, 
+        ".eslintrc.js" /* ignore self */
     ]
 };
