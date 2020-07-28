@@ -1,3 +1,5 @@
+'use strict';
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -12,8 +14,7 @@ const db = require('./app_api/models/db');
 db.getLocationModel().then( (Location) => {
   Location.find(function (err, res) {
     if (err) return console.error(err);
-    console.log('found these locations:');
-    console.log(res);
+    console.log(`# locations: ${res.length}`);
   });
 });
 
