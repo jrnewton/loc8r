@@ -11,13 +11,20 @@ const apiRouter = require('./app_api/routes/index');
 const db = require('./app_api/models/db');
 
 //Does our db layer work? 
+console.log('Database test');
+db.Location.find( (err, res) => {
+  if (err) return console.error(err);
+  console.log(`  # locations: ${res.length}`);
+});
+
+/* 
 db.getLocationModel().then( (Location) => {
   Location.find(function (err, res) {
     if (err) return console.error(err);
     console.log(`# locations: ${res.length}`);
   });
 });
-
+*/ 
 const hbs = require('hbs');
 
 hbs.registerHelper('subtract', function(num1, num2) { 

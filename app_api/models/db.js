@@ -54,6 +54,9 @@ process.on('SIGTERM', () => {
 
 const locations = require('./locations');
 
+const Location = conn.model('Location', locations.schema, 'locations');
+module.exports.Location = Location;
+/*
 const getLocationModel = async function() { 
   console.log('Waiting for a ready connection');
   await conn;
@@ -63,3 +66,4 @@ const getLocationModel = async function() {
 };
 
 module.exports.getLocationModel = getLocationModel;
+*/
