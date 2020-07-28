@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'production') {
 //mongoose/mongo does not currently support that type of connection but
 //there IS a ticket filed (see https://jira.mongodb.org/browse/CSHARP-734)
 //but sadly no real progress is has been made...
-const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 conn.on('connected', () => {
   console.log(`[${dbURI}] Mongoose connected`);
 });
@@ -54,6 +54,9 @@ process.on('SIGTERM', () => {
 
 const locations = require('./locations');
 
+const Location = conn.model('Location', locations.schema, 'locations');
+module.exports.Location = Location;
+/*
 const getLocationModel = async function() { 
   console.log('Waiting for a ready connection');
   await conn;
@@ -63,3 +66,4 @@ const getLocationModel = async function() {
 };
 
 module.exports.getLocationModel = getLocationModel;
+*/
