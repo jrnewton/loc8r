@@ -1,3 +1,7 @@
+'use strict';
+
+/* eslint-disable */
+
 const reviewsCreate = (req, res) => { };
 const reviewsReadOne = (req, res) => { };
 const reviewsUpdateOne = (req, res) => { };

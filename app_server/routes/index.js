@@ -1,3 +1,5 @@
+'use strict';
+
 const ctrlLocations = require('../controllers/locations');
 const ctrlOthers = require('../controllers/others');
 const express = require('express');

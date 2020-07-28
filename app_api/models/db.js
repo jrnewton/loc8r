@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require('mongoose');
 
 console.log(`NODE_ENV=${process.env.NODE_ENV}`);

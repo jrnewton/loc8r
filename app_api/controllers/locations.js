@@ -1,3 +1,5 @@
+'use strict';
+
 const locationsListByDistance = (req, res) => { 
   res
     .status(200)
