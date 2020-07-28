@@ -60,14 +60,4 @@ const getLocationModel = async function() {
   return Location;
 };
 
-module.exports.Location = getLocationModel;
-
-// const readyModel = new Promise( (resolve, reject) => { 
-//   conn.on('connected', () => {
-//     console.log(`[${dbURI}] Mongoose connected`);
-//     const Location = conn.model('Location', schema.location, 'locations');
-//     resolve(Location);
-//   });
-// });
-
-// module.exports.model = readyModel;
+module.exports.getLocationModel = getLocationModel;

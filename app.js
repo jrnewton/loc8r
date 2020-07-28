@@ -6,7 +6,16 @@ const favicon = require('serve-favicon')
 const logger = require('morgan');
 const indexRouter = require('./app_server/routes/index');
 const apiRouter = require('./app_api/routes/index');
-//require('./app_api/models/db');
+const db = require('./app_api/models/db');
+
+//Does our db layer work? 
+db.getLocationModel().then( (Location) => {
+  Location.find(function (err, res) {
+    if (err) return console.error(err);
+    console.log('found these locations:');
+    console.log(res);
+  });
+});
 
 const hbs = require('hbs');
 
