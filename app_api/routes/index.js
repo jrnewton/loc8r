@@ -9,7 +9,7 @@ const ctrlReviews = require('../controllers/reviews');
 // locations
 router
   .route('/locations')
-  .get(ctrlLocations.locationsListByDistance)
+  .get(ctrlLocations.locationsList) //locationsListByDistance)
   .post(ctrlLocations.locationsCreate);
 
 router
