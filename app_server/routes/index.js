@@ -8,6 +8,7 @@ const router = express.Router();
 /* Locations pages */
 router.get('/', ctrlLocations.homeList);
 router.get('/location', ctrlLocations.locationInfo);
+router.get('/location/:locationid', ctrlLocations.locationReadOne);
 router.get('/location/review/new', ctrlLocations.addReview);
 
 router.get('/about', ctrlOthers.about);
