@@ -1,7 +1,7 @@
 'use strict';
 
 /* eslint-disable */
-const db = require("../../app_api/models/db");
+const db = require("../models/db");
 
 const reviewsCreate = (req, res) => { };
 const reviewsReadOne = (req, res) => { 

@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require("../../app_api/models/db");
+const db = require("../models/db");
 
 const locationsList = (req, res) => { 
   db.Location.find( (error, locations) => {
