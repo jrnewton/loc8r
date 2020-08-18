@@ -15,10 +15,9 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
 //there IS a ticket filed (see https://jira.mongodb.org/browse/CSHARP-734)
 //but sadly no real progress is has been made...
 const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
-
-const locations = require('./locations');
-const Location = conn.model('Location', locations.schema, 'locations');
-module.exports.Location = Location;
+conn.catch( () => { 
+  console.error(`failed to connect to ${dbURI}`);
+});
 
 conn.on('connected', () => {
   console.log(`[${dbURI}] Mongoose connected`);
@@ -56,3 +55,7 @@ process.on('SIGTERM', () => {
     process.exit(0);
   });
 });
+
+const locations = require('./locations');
+const Location = conn.model('Location', locations.schema, 'locations');
+module.exports.Location = Location;
