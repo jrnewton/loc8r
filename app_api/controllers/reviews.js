@@ -5,43 +5,52 @@ const db = require("../models/db");
 
 const reviewsCreate = (req, res) => { };
 const reviewsReadOne = (req, res) => { 
-  let id = req.params.locationid;
+  const id = req.params.locationid;
+  const reviewId = req.params.reviewid;
   db.Location
     .findById(id)
     //space-separated string of the paths you want to retrieve
     .select('_id name reviews')
     .exec( (error, location) => { 
+      
       //mongoose returns error when bad ID is provided... 
       if (error || !location) {
+        const msg = `error retrieving location '${id}'`;
+        console.error(msg);
         return res.status(404).json({ 
-          "message": `error retrieving location ${id}`,
+          "message": msg, 
           "error": error
         });
       }
-
-      //found it  
-      if (location.reviews && location.reviews.length > 0) { 
-        let reviewId = req.params.reviewid;
-        const review = location.reviews.id(reviewId);
-        if (!review) { 
-          return res.status(404).json({
-            "message": `error retrieving review ${reviewId}`
-          });
+      //found location
+      else {
+        console.log(`success retrieving location '${id}'`);
+        if (location.reviews && location.reviews.length > 0) { 
+          const review = location.reviews.id(reviewId);
+          if (!review) { 
+            const msg = `error retrieving review '${reviewId}'`;
+            return res.status(404).json({
+              "message": msg 
+            });
+          }
+          else { 
+            console.log(`success retrieving review '${reviewId}'`);
+            return res.status(200).json({
+              location: { 
+                name: location.name, 
+                id: location._id
+              },
+              review
+            });
+          }
         }
         else { 
-          return res.status(200).json({
-            location: { 
-              name: location.name, 
-              id: location._id
-            },
-            review
+          const msg = `no reviews for location ${id}`;
+          console.error(msg);
+          return res.status(404).json({
+            "message": msg
           });
         }
-      }
-      else { 
-        return res.status(404).json({
-          "message": `no reviews for location ${id}`
-        });
       }
     });
 };
