@@ -7,9 +7,12 @@ const ctrlLocations = require('../controllers/locations');
 const ctrlReviews = require('../controllers/reviews');
 
 // locations
+router.route('/locationsbygeo')
+  .get(ctrlLocations.locationsListByDistance);
+
 router
   .route('/locations')
-  .get(ctrlLocations.locationsList) //locationsListByDistance)
+  .get(ctrlLocations.locationsList)
   .post(ctrlLocations.locationsCreate);
 
 router
