@@ -1,5 +1,6 @@
 'use strict';
 
+const debug = require('debug')('meanwifi:controllers');
 const db = require("../models/db");
 
 const locationsList = (req, res) => { 
@@ -44,7 +45,7 @@ const locationsReadOne = (req, res) => {
       });
     }
     else { 
-      console.log(`success retrieving location '${id}'`);
+      debug(`success retrieving location '${id}'`);
       return res.status(200).json(location);
     }
   });

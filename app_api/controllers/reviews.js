@@ -1,5 +1,6 @@
 'use strict';
 
+const debug = require('debug')('meanwifi:controllers');
 /* eslint-disable */
 const db = require("../models/db");
 
@@ -24,7 +25,7 @@ const reviewsReadOne = (req, res) => {
       }
       //found location
       else {
-        console.log(`success retrieving location '${id}'`);
+        debug(`success retrieving location '${id}'`);
         if (location.reviews && location.reviews.length > 0) { 
           const review = location.reviews.id(reviewId);
           if (!review) { 
@@ -34,7 +35,7 @@ const reviewsReadOne = (req, res) => {
             });
           }
           else { 
-            console.log(`success retrieving review '${reviewId}'`);
+            debug(`success retrieving review '${reviewId}'`);
             return res.status(200).json({
               location: { 
                 name: location.name, 
