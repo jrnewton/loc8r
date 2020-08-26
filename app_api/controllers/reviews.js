@@ -10,7 +10,7 @@ const reviewsReadOne = (req, res) => {
   const reviewId = req.params.reviewid;
   db.Location
     .findById(id)
-    //space-separated string of the paths you want to retrieve
+    //The select() method accepts a space-separated string of the paths you want to retrieve.
     .select('_id name reviews')
     .exec( (error, location) => { 
       
