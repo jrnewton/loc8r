@@ -7,7 +7,7 @@
     "test": "mocha",
     "lint": "eslint .",
     "start": "node index.js",
-    "debug": "DEBUG=meanwifi:* node index.js",
+    "debug": "DEBUG=meanwifi:* nodemon",
     "show-node-procs": "ps -ef | grep \"node \" | grep -v \"grep\""
   },
   "repository": {
