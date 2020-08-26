@@ -1,5 +1,6 @@
 'use strict';
 
+const debug = require('debug')('meanwifi:app');
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -13,7 +14,7 @@ const db = require('./app_api/models/db');
 //Does our db layer work? 
 db.Location.find( (err, res) => {
   if (err) return console.error(err);
-  console.log(`# of locations = ${res.length}`);
+  debug(`# of locations = ${res.length}`);
 });
 
 const hbs = require('hbs');
@@ -61,4 +62,5 @@ app.use(function(err, req, res /*not used: next */) {
   res.render('error');
 });
 
+app.dbConnection = db.Connection;
 module.exports = app;

@@ -1,8 +1,9 @@
 'use strict';
 
+const debug = require('debug')('meanwifi:db');
 const mongoose = require('mongoose');
 
-console.log(`NODE_ENV=${process.env.NODE_ENV}`);
+debug(`NODE_ENV=${process.env.NODE_ENV}`);
 let dbURI = 'mongodb://localhost/loc8r';
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
   dbURI = process.env.MONGODB_URI;
@@ -20,20 +21,20 @@ conn.catch( () => {
 });
 
 conn.on('connected', () => {
-  console.log(`[${dbURI}] Mongoose connected`);
+  debug(`[${dbURI}] Mongoose connected`);
 });
 
 conn.on('error', err => {
-  console.log(`[${dbURI}] Mongoose connection error:`, err);
+  console.error(`[${dbURI}] Mongoose connection error:`, err);
 });
 
 conn.on('disconnected', () => {
-  console.log(`[${dbURI}] Mongoose disconnected`);
+  debug(`[${dbURI}] Mongoose disconnected`);
 });
 
 const shutdown = (msg, callback) => { 
   conn.close( () => {
-    console.log(`[${dbURI}] Mongoose disconnected through ${msg}`);
+    debug(`[${dbURI}] Mongoose disconnected through ${msg}`);
     callback();
   });
 };
@@ -59,3 +60,4 @@ process.on('SIGTERM', () => {
 const locations = require('./locations');
 const Location = conn.model('Location', locations.schema, 'locations');
 module.exports.Location = Location;
+module.exports.Connection = conn;
