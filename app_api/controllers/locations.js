@@ -1,17 +1,18 @@
 'use strict';
 
+const mongoose = require('mongoose');
 const debug = require('debug')('meanwifi:controllers');
 const db = require("../models/db");
 
 const locationsList = (req, res) => { 
+  debug('locationsList');
+
   db.Location.find( (error, locations) => {
-    if (error || !locations) { 
-      const msg = "Locations not found";
-      console.error(msg);
-      return res.status(404).json( { 
-        "message": msg, 
-        "error": error
-      });
+    if (error) { 
+      return res.status(500).json({ "message": error.message });
+    }
+    else if (!locations) { 
+      return res.status(404);
     }
     else { 
       return res.status(200).json(locations);
@@ -25,7 +26,7 @@ function validateParam(paramName, paramValue, res) {
     return true;
   }
   else {
-    res.status(404).json({ 
+    res.status(400).json({ 
       "message": `Param '${paramName}' required`
     });
     return false;
@@ -33,7 +34,7 @@ function validateParam(paramName, paramValue, res) {
 }
 
 const locationsListByDistance = (req, res) => { 
-  debug(`locationsListByDistance params: ${JSON.stringify(req.query)}`);
+  debug(`locationsListByDistance params=${JSON.stringify(req.query)}`);
 
   //URL format: api/locations?lng=-0.7992599&lat=51.378091&maxDistance=20000
   const lng = parseFloat(req.query.lng);
@@ -75,32 +76,45 @@ const locationsListByDistance = (req, res) => {
     //limit: limit
   };
 
-  db.Location.aggregate([{ $geoNear: {near, ...geoOptions} }, { $limit: limit } ], (error, locations) => { 
-    if (error || !locations) { 
-      const msg = "Error performing query for locations by geo";
-      console.error(msg);
+  const aggOptions = [{ $geoNear: {near, ...geoOptions} }, { $limit: limit }];
+  debug(`locationsListByDistance aggregateOptions=${aggOptions}`);
 
-      return res.status(404).json({ 
-        "message": msg, 
+  try { 
+    //Since user input can affect results, return req.query for any status code != 200.
+
+    db.Location.aggregate(aggOptions, (error, locations) => { 
+      if (error) { 
         /* If you pass the entire error object then the error.message property is
-           not included in JSON.stringify output.  
-           Why? It's type and value doesn't fall into any of the cases where stringify 
-           would drop it on the floor...  */
-        "error": error.message
-      });
-      //   { 
-      //   "message": msg, 
-      //   "error": error.message
-      // });
-    }
-    else { 
-      return res.status(200).json(locations);
-    }
-  });
-
-  // res
-  //   .status(200)
-  //   .json({"status" : "success"});
+            not included in JSON.stringify output.  
+            Why? It's type and value doesn't fall into any of the cases where stringify 
+            would drop it on the floor...  */
+        return res.status(500).json({ 
+          "message": error.message, 
+          "query": req.query
+        });
+      }
+      else if (!locations) { 
+        return res.status(404).json({
+            "query": req.query
+        });
+      }
+      else { 
+        locations = locations.map( result => { 
+          //deviate from the book - result is already 99% what we want. 
+          //add a display property of the distance element to be used in the UI.
+          result.distance.display = `${result.distance.calculated.toFixed()}m`;
+          return result;
+        });
+        return res.status(200).json(locations);
+      }
+    });
+  }
+  catch (error) { 
+    return res.status(500).json({ 
+      "message": error.message, 
+      "query": req.query
+    });
+  }
 };
 
 const locationsCreate = (req, res) => { 
@@ -111,19 +125,23 @@ const locationsCreate = (req, res) => {
 
 const locationsReadOne = (req, res) => { 
   const id = req.params.locationid;
+  //Validate the id with mongo, otherwise findById returns an error (instead of null result)
+  //I want to differntiate that type of error with something more severe... 
+  const valid = mongoose.Types.ObjectId.isValid(id);
+  debug(`locationsReadOne id='${id}', valid=${valid}`);
+
+  if (!valid) { 
+    return res.status(404).json({ "message": `location id ${id} not valid` });
+  }
 
   db.Location.findById(id, (error, location) => { 
     //mongoose returns error when bad ID is provided... 
-    if (error || !location) {
-      const msg = `error retrieving location '${id}'`;
-      console.error(msg);
-      return res.status(404).json({ 
-        "message": msg,
-        "error": error
-      });
+    if (error) { 
+      return res.status(500).json({ "message": error.message });
+    } else if (!location) {
+      return res.status(404);
     }
     else { 
-      debug(`success retrieving location '${id}'`);
       return res.status(200).json(location);
     }
   });
