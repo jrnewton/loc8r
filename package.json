@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "DEBUG=meanwifi:tests mocha",
     "lint": "eslint .",
     "start": "node index.js",
     "debug": "DEBUG=meanwifi:* nodemon",
