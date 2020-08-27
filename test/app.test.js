@@ -1,18 +1,29 @@
 'use strict';
 
+const debug = require('debug')('meanwifi:tests');
 const supertest = require('supertest');
 const app = require('../app');
 let request = supertest(app);
+
+function subStringWithEllipsis(string) { 
+  const maxLength = 75;
+  if (string.length > maxLength) { 
+    string = string.substr(0, maxLength) + '...';
+  }
+
+  return string;
+}
 
 const basicGetRequest = function(url, status, done) { 
   request
     .get(url)
     .expect(status)
-    .end( (err /*, res*/) => { 
+    .end( (err, res) => { 
+      debug(`status=${res.status}, text=${subStringWithEllipsis(res.text)}`);
       if (err) {
         throw err;
       }
-      else { 
+      else {
         done();
       }
     });
