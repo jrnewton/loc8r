@@ -130,9 +130,37 @@ const locationsListByDistance = (req, res) => {
 };
 
 const locationsCreate = (req, res) => { 
-  res
-    .status(200)
-    .json({"status" : "success"});
+  const newLocation = {
+    name: req.body.name, 
+    address: req.body.address,
+    //rating: req.body.rating,
+    facilities: req.body.facilities.split(','),
+    coords: {
+      type: "Point", 
+      coordinates: [
+        parseFloat(req.body.lng),
+        parseFloat(req.body.lat)
+      ]
+    } 
+    /*
+    openingHours: { 
+      days: "Monday - Friday",
+      openingTime: "7:00am",
+      closingTime: "7:00pm",
+      closed: false
+    }*/
+  };
+  
+  debug(`locationsCreate name=${newLocation.name}`);
+
+  db.Location.create(newLocation, (error, location) => { 
+    if (error) { 
+      return res.status(400).json(error.message);
+    }
+    else { 
+      return res.status(201).json(location);
+    }
+  });
 };
 
 const locationsReadOne = (req, res) => { 
