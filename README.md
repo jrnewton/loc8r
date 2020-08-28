@@ -4,7 +4,15 @@ The Loc8r App lists nearby places with Wi-Fi where people can go to get some wor
 
 Live demo: http://meanwifi.herokuapp.com/
 
-## Some notes on modules not included in the book
+## Differences between book code and this app
+
+- Handlebars for UI templating instead of pug.  See below.
+- Use Mongoose.createConnection instead of default global connection.
+- app and db code are structured a bit different to allow for Mocha to do cleanup at end of test run.
+- Different HTTP status codes, to differentiate _not found_ vs. _error_.
+
+
+## Some notes on additional modules used
 
 - [serve-favicon](https://www.npmjs.com/package/serve-favicon) for serving up [favicon.ico](public/favicon.ico).  Browsers request it, and I like seeing a clean set of responses from Express.
 - [handlebars](https://www.npmjs.com/package/hbs) for UI templating.  The module linked is 'hbs' which is the Express view engine, which in turn uses the 'handlebars' template engine.  The book uses pug but I really don't care for it's syntax preferring a library that sticks with small HTML friendly formatting.  I wrote [a few hbs helper routines](hbs-helpers.js) used to output the star rating icons.
