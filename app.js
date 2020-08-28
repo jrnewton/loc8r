@@ -17,22 +17,11 @@ db.Location.find( (err, res) => {
   debug(`# of locations = ${res.length}`);
 });
 
-const hbs = require('hbs');
-
-hbs.registerHelper('subtract', function(num1, num2) { 
-  return num1 - num2;
-});
-
-hbs.registerHelper('times', function(count, options) { 
-  var accum = '';
-  for(var i = 0; i < count; i++)
-    accum += options.fn(i);
-  return accum;
-});
-
 const app = express();
 
 // view engine setup
+
+require('./hbs-helpers');
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'hbs');
 
