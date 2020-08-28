@@ -2,12 +2,7 @@
 
 const debug = require('debug')('meanwifi:models');
 const mongoose = require('mongoose');
-
-debug(`NODE_ENV=${process.env.NODE_ENV}`);
-let dbURI = 'mongodb://localhost/loc8r';
-if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
-  dbURI = process.env.MONGODB_URI;
-}
+const dbURI = require('../../runtime').dbURI;
 
 //Note to self
 //I wanted to restrict my Mongodb Atlas cluster to a whitelist IP list but
