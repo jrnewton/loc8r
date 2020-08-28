@@ -93,7 +93,7 @@ const locationsListByDistance = (req, res) => {
           "query": req.query
         });
       }
-      else if (!locations) { 
+      else if (locations.length === 0) { 
         return res.status(404).json({
             "query": req.query
         });
