@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('meanwifi:db');
+const debug = require('debug')('meanwifi:models');
 const mongoose = require('mongoose');
 
 debug(`NODE_ENV=${process.env.NODE_ENV}`);

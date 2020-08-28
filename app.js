@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('meanwifi:app');
+const debug = require('debug')('meanwifi:server');
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
