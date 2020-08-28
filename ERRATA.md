@@ -24,6 +24,6 @@ Use [this code instead](https://github.com/rocketnewton/meanwifi/blob/c4b1b899a3
 - Page 182:  the Extra credit blurb (pass in max distance) indicates the code is on the author's github but I do not see it. 
 
 - Page 187 / Listing 6.5
-  - the 'coords' property has a syntax error.  It is missing it's property name 'coordinates'.
+  - Syntax error on the 'coords' property, it is missing the property name 'coordinates'.
 
-  - the opening hours also has a syntax error.  It is missing it's property name 'openingHours'. 
+  - Syntax error on opening times data, it is missing the property name 'openingTimes'.
