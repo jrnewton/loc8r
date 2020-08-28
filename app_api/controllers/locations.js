@@ -100,10 +100,22 @@ const locationsListByDistance = (req, res) => {
       }
       else { 
         locations = locations.map( result => { 
-          //deviate from the book - result is already 99% what we want. 
-          //add a display property of the distance element to be used in the UI.
-          result.distance.display = `${result.distance.calculated.toFixed()}m`;
-          return result;
+          //Quick way to return data: return result as-is with one addition
+          //to the distance property.  This is quick but returns a lot more data not
+          //used on the homepage.
+          //result.distance.display = `${result.distance.calculated.toFixed()}m`;
+          //return result;
+          
+          //Method used by the book - return only what is needed for the 
+          //homepage display.
+          return { 
+            id: result._id,
+            name: result.name,
+            address: result.address,
+            rating: result.rating,
+            facilities: result.facilities,
+            distance: `${result.distance.calculated.toFixed()}m`,
+          };
         });
         return res.status(200).json(locations);
       }
