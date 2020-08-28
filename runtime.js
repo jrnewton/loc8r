@@ -12,9 +12,13 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
 
 const port = normalizePort(process.env.PORT || '3000');
 
-module.exports.port = port;
-module.exports.dbURI = dbURI;
-module.exports.readOnly = readOnly;
+const options = { 
+  port: port,
+  dbURI: dbURI,
+  readOnly: readOnly
+};
+module.exports.options = options;
+
 module.exports.printOptions = printOptions;
 
 /**
@@ -37,5 +41,5 @@ function normalizePort(val) {
 }
 
 function printOptions() { 
-  debug('runtime options:', module.exports);
+  debug('runtime options:', options);
 }

@@ -9,7 +9,7 @@ const runtime = require('./runtime');
 
 runtime.printOptions();
 
-const port = runtime.port;
+const port = runtime.options.port;
 app.set('port', port);
 
 const server = http.createServer(app);

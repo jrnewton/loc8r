@@ -2,7 +2,7 @@
 
 const debug = require('debug')('meanwifi:models');
 const mongoose = require('mongoose');
-const dbURI = require('../../runtime').dbURI;
+const dbURI = require('../../runtime').options.dbURI;
 
 //Note to self
 //I wanted to restrict my Mongodb Atlas cluster to a whitelist IP list but
