@@ -1,47 +1,170 @@
 'use strict';
 
-const db = require("../../app_api/models/db");
+const mongoose = require('mongoose');
+const debug = require('debug')('meanwifi:controllers');
+const db = require("../models/db");
 
 const locationsList = (req, res) => { 
+  debug('locationsList');
+
   db.Location.find( (error, locations) => {
     if (error) { 
-      return res.status(404).json(error);
+      return res.status(500).json({ "message": error.message });
     }
-
-    res.status(200).json(locations);
+    else if (!locations) { 
+      return res.status(404);
+    }
+    else { 
+      return res.status(200).json(locations);
+    }
   });
 };
+
+function validateParam(paramName, paramValue, res) { 
+  debug(`validateParam: ${paramName}=${paramValue}`);
+  if (paramValue) { 
+    return true;
+  }
+  else {
+    res.status(400).json({ 
+      "message": `Param '${paramName}' required`
+    });
+    return false;
+  }
+}
+
 const locationsListByDistance = (req, res) => { 
-  res
-    .status(200)
-    .json({"status" : "success"});
+  debug(`locationsListByDistance params=${JSON.stringify(req.query)}`);
+
+  //URL format: api/locations?lng=-0.7992599&lat=51.378091&maxDistance=20000
+  const lng = parseFloat(req.query.lng);
+  if (!validateParam("lng", lng, res)) { 
+    return;
+  }
+
+  const lat = parseFloat(req.query.lat);
+  if (!validateParam("lat", lat, res)) { 
+    return;
+  }
+
+  const maxDistance = parseInt(req.query.maxDistance);
+  if (!validateParam("maxDistance", maxDistance, res)) { 
+    return;
+  }
+
+  const limit = 10;
+
+  const near = {
+    type: "Point",
+    coordinates: [lng, lat]
+  };
+
+  /*
+    You’re using spherical: true here because it causes
+    MongoDB to use $nearSphere semantics, which
+    calculates distances using spherical geometry.
+    If this were false, it would use 2D geometry. 
+  */
+  const geoOptions = { 
+    distanceField: "distance.calculated",
+    spherical: true,
+    maxDistance: maxDistance
+    /*  Note: Starting in version 4.2, MongoDB removes the limit 
+        and num options for the $geoNear stage as well as the default 
+        limit of 100 documents. To limit the results of $geoNear, use 
+        the $geoNear stage with the $limit stage. */
+    //limit: limit
+  };
+
+  const aggOptions = [{ $geoNear: {near, ...geoOptions} }, { $limit: limit }];
+  debug(`locationsListByDistance aggregateOptions=${aggOptions}`);
+
+  try { 
+    //Since user input can affect results, return req.query for any status code != 200.
+
+    db.Location.aggregate(aggOptions, (error, locations) => { 
+      if (error) { 
+        /* If you pass the entire error object then the error.message property is
+            not included in JSON.stringify output.  
+            Why? It's type and value doesn't fall into any of the cases where stringify 
+            would drop it on the floor...  */
+        return res.status(500).json({ 
+          "message": error.message, 
+          "query": req.query
+        });
+      }
+      else if (locations.length === 0) { 
+        return res.status(404).json({
+            "query": req.query
+        });
+      }
+      else { 
+        locations = locations.map( result => { 
+          //Quick way to return data: return result as-is with one addition
+          //to the distance property.  This is quick but returns a lot more data not
+          //used on the homepage.
+          //result.distance.display = `${result.distance.calculated.toFixed()}m`;
+          //return result;
+          
+          //Method used by the book - return only what is needed for the 
+          //homepage display.
+          return { 
+            id: result._id,
+            name: result.name,
+            address: result.address,
+            rating: result.rating,
+            facilities: result.facilities,
+            distance: `${result.distance.calculated.toFixed()}m`,
+          };
+        });
+        return res.status(200).json(locations);
+      }
+    });
+  }
+  catch (error) { 
+    return res.status(500).json({ 
+      "message": error.message, 
+      "query": req.query
+    });
+  }
 };
+
 const locationsCreate = (req, res) => { 
   res
     .status(200)
     .json({"status" : "success"});
 };
+
 const locationsReadOne = (req, res) => { 
-  let id = req.params.locationid;
+  const id = req.params.locationid;
+  //Validate the id with mongo, otherwise findById returns an error (instead of null result)
+  //I want to differntiate that type of error with something more severe... 
+  const valid = mongoose.Types.ObjectId.isValid(id);
+  debug(`locationsReadOne id='${id}', valid=${valid}`);
+
+  if (!valid) { 
+    return res.status(404).json({ "message": `location id ${id} not valid` });
+  }
+
   db.Location.findById(id, (error, location) => { 
     //mongoose returns error when bad ID is provided... 
-    if (error || !location) {
-      res.status(404).json({ 
-        "message": `error retrieving location ${id}`,
-        "error": error
-      });
+    if (error) { 
+      return res.status(500).json({ "message": error.message });
+    } else if (!location) {
+      return res.status(404);
     }
     else { 
-      console.log('loc found');
-      res.status(200).json(location);
+      return res.status(200).json(location);
     }
   });
 };
+
 const locationsUpdateOne = (req, res) => { 
   res
     .status(200)
     .json({"status" : "success"});
 };
+
 const locationsDeleteOne = (req, res) => { 
   res
     .status(200)

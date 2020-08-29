@@ -1,5 +1,6 @@
 'use strict';
 
+const debug = require('debug')('meanwifi:controllers');
 const model = require("../../app_api/models/static");
 
 const homeList = (req, res) => { 
@@ -21,7 +22,7 @@ const homeList = (req, res) => {
 const locationInfo = (req, res) => { 
   const locationId = req.query.id;
   if (locationId) { 
-    console.log(`path=${req.path}; location id=${locationId}`);
+    debug(`path=${req.path}; location id=${locationId}`);
     const location = model.locations[locationId];
     if (location) { 
       res.render('location-info', { 
@@ -36,12 +37,12 @@ const locationInfo = (req, res) => {
       });
     }
     else {
-      console.log(`path=${req.path}; location id ${locationId} not found`);
+      console.error(`path=${req.path}; location id ${locationId} not found`);
       res.status(404).send(`Location id ${locationId} not found`);
     }
   }
   else { 
-    console.log(`path=${req.path}; missing location id`);
+    console.error(`path=${req.path}; missing location id`);
     res.status(404).send('Location id required');
   }
 }

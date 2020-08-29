@@ -2,11 +2,13 @@
   "name": "meanwifi",
   "version": "0.0.1",
   "private": true,
+  "main": "index.js",
   "scripts": {
+    "test": "DEBUG=meanwifi:tests mocha",
     "lint": "eslint .",
-    "start": "node ./bin/www",
-    "show-node-procs": "ps -ef | grep \"node \" | grep -v \"grep\"",
-    "dev": "nodemon --exec \"npm run lint && node ./bin/www\""
+    "start": "node index.js",
+    "debug": "DEBUG=meanwifi:* nodemon",
+    "show-node-procs": "ps -ef | grep \"node \" | grep -v \"grep\""
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,7 @@
     "url": "https://github.com/rocketnewton/meanwifi/issues"
   },
   "engines": {
-    "node": ">=12.0.0",
+    "node": ">=14.0.0",
     "npm": ">=6.14.0"
   },
   "dependencies": {
@@ -33,6 +35,8 @@
   },
   "devDependencies": {
     "eslint": "7.4.0",
-    "nodemon": "2.0.4"
+    "mocha": "8.1.2",
+    "nodemon": "2.0.4",
+    "supertest": "4.0.2"
   }
 }

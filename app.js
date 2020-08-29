@@ -1,5 +1,6 @@
 'use strict';
 
+const debug = require('debug')('meanwifi:server');
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -13,25 +14,14 @@ const db = require('./app_api/models/db');
 //Does our db layer work? 
 db.Location.find( (err, res) => {
   if (err) return console.error(err);
-  console.log(`# of locations = ${res.length}`);
-});
-
-const hbs = require('hbs');
-
-hbs.registerHelper('subtract', function(num1, num2) { 
-  return num1 - num2;
-});
-
-hbs.registerHelper('times', function(count, options) { 
-  var accum = '';
-  for(var i = 0; i < count; i++)
-    accum += options.fn(i);
-  return accum;
+  debug(`# of locations = ${res.length}`);
 });
 
 const app = express();
 
 // view engine setup
+
+require('./hbs-helpers');
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'hbs');
 
@@ -61,4 +51,5 @@ app.use(function(err, req, res /*not used: next */) {
   res.render('error');
 });
 
+app.dbConnection = db.Connection;
 module.exports = app;
