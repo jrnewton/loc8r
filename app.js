@@ -51,5 +51,6 @@ app.use(function(err, req, res /*not used: next */) {
   res.render('error');
 });
 
+app.ready = db.ready;
 app.dbConnection = db.Connection;
 module.exports = app;

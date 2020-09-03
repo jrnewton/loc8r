@@ -88,7 +88,7 @@ const about = {
 const test = { 
   title: 'Test', 
   pageHeader: { 
-    title: 'Test'
+    title: 'Bootstrap CSS Experiments'
   }, 
   numbers: [
     "one", 

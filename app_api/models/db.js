@@ -2,12 +2,7 @@
 
 const debug = require('debug')('meanwifi:models');
 const mongoose = require('mongoose');
-
-debug(`NODE_ENV=${process.env.NODE_ENV}`);
-let dbURI = 'mongodb://localhost/loc8r';
-if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
-  dbURI = process.env.MONGODB_URI;
-}
+const dbURI = require('../../runtime').options.dbURI;
 
 //Note to self
 //I wanted to restrict my Mongodb Atlas cluster to a whitelist IP list but
@@ -16,12 +11,23 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
 //there IS a ticket filed (see https://jira.mongodb.org/browse/CSHARP-734)
 //but sadly no real progress is has been made...
 const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
-conn.catch( () => { 
-  console.error(`failed to connect to ${dbURI}`);
-});
 
-conn.on('connected', () => {
-  debug(`[${dbURI}] Mongoose connected`);
+module.exports.Connection = conn;
+
+const locations = require('./locations');
+const Location = conn.model('Location', locations.schema, 'locations');
+module.exports.Location = Location;
+
+module.exports.ready = new Promise( (resolve, reject) => { 
+  conn.catch( () => { 
+    //console.error(`failed to connect to ${dbURI}`);
+    reject(`[${dbURI}] failed to connect`);
+  });
+  
+  conn.on('connected', () => {
+    //debug(`[${dbURI}] Mongoose connected`);
+    resolve(`[${dbURI}] Mongoose connected`)
+  });
 });
 
 conn.on('error', err => {
@@ -57,7 +63,5 @@ process.on('SIGTERM', () => {
   });
 });
 
-const locations = require('./locations');
-const Location = conn.model('Location', locations.schema, 'locations');
-module.exports.Location = Location;
-module.exports.Connection = conn;
+
+
