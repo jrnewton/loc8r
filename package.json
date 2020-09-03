@@ -2,11 +2,11 @@
   "name": "meanwifi",
   "version": "0.0.1",
   "private": true,
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "DEBUG=meanwifi:tests mocha",
     "lint": "eslint .",
-    "start": "node index.js",
+    "start": "node server.js",
     "debug": "DEBUG=meanwifi:* nodemon",
     "show-node-procs": "ps -ef | grep \"node \" | grep -v \"grep\""
   },
