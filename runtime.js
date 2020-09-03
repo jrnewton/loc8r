@@ -10,6 +10,11 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
   readOnly = true;
 }
 
+//For testing readOnly flag 
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'ro') {
+  readOnly = true;
+}
+
 const port = normalizePort(process.env.PORT || '3000');
 
 const options = { 
