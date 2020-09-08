@@ -171,7 +171,7 @@ const locationsReadOne = (req, res) => {
   debug(`locationsReadOne id='${id}', valid=${valid}`);
 
   if (!valid) { 
-    return res.status(404).json({ "message": `location id ${id} not valid` });
+    return res.status(404).json({ "message": 'location id not valid' });
   }
 
   db.Location.findById(id, (error, location) => { 
