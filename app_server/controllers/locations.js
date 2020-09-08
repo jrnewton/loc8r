@@ -38,7 +38,7 @@ const locationInfo = (req, res) => {
     }
     else {
       console.error(`path=${req.path}; location id ${locationId} not found`);
-      res.status(404).send(`Location id ${locationId} not found`);
+      res.status(404).send('Location not found');
     }
   }
   else { 
