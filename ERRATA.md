@@ -1,6 +1,6 @@
 # Errata and notes on *Getting Mean with Mongo, Express, Angular, and Node Second Edition*
 
-All page numbers are printed page number not PDF page numbers, although my source is a PDF version of the book. 
+All page numbers are printed page numbers not PDF page numbers, although my source is the PDF version of the book. 
 
 I am not following the book's usage of 'pug' as the UI template engine so I have not validated pug specific content.
 
