@@ -26,7 +26,7 @@ module.exports.ready = new Promise( (resolve, reject) => {
   
   conn.on('connected', () => {
     //debug(`[${dbURI}] Mongoose connected`);
-    resolve(`[${dbURI}] Mongoose connected`)
+    resolve(`[${dbURI}] Mongoose connected`);
   });
 });
 

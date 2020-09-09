@@ -75,7 +75,7 @@ const locations = {
       }
     ]
   }
-}
+};
 
 const about = { 
   title: 'About', 
@@ -83,7 +83,7 @@ const about = {
     title: 'About', 
     tagline: 'Loc8r was created to help people find places to sit down and get a bit of work done.'
   } 
-}
+};
 
 const test = { 
   title: 'Test', 
@@ -104,7 +104,7 @@ const test = {
     "eleven",
     "twelves"
   ]
-}
+};
 
 
 module.exports = { 

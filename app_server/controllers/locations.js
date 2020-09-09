@@ -45,11 +45,11 @@ const locationInfo = (req, res) => {
     console.error(`path=${req.path}; missing location id`);
     res.status(404).send('Location id required');
   }
-}
+};
 
 const addReview = (req, res) => { 
   res.render('location-review', { title: 'Loc8r - Add Review' });
-}
+};
 
 module.exports = {
   homeList,
