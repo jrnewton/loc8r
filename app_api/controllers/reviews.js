@@ -16,11 +16,11 @@ const reviewsReadOne = (req, res) => {
   debug(`reviewsReadOne id=${id}; valid=${idValid}, reviewId=${reviewId}; valid=${reviewIdValid}`);
 
   if (!idValid) {
-    return res.status(404).json({ "message": `location id '${id}' not valid` });
+    return res.status(404).json({ "message": 'location id not valid' });
   }
 
   if (!reviewIdValid) {
-    return res.status(404).json({ "message": `review id '${id}' not valid` });
+    return res.status(404).json({ "message": 'review id not valid' });
   }
   
 
@@ -35,7 +35,7 @@ const reviewsReadOne = (req, res) => {
         return res.status(500).json({ "message": error.message });
       }
       else if (!location) {
-        return res.status(404).json({ "message": `location '${id}' not found` });
+        return res.status(404).json({ "message": 'location id not found' });
       }
       //found location
       else {
@@ -43,7 +43,7 @@ const reviewsReadOne = (req, res) => {
         if (location.reviews && location.reviews.length > 0) { 
           const review = location.reviews.id(reviewId);
           if (!review) { 
-            return res.status(404).json({ "message": `review '${reviewId}' not found` });
+            return res.status(404).json({ "message": 'review id not found' });
           }
           else { 
             debug(`success retrieving review '${reviewId}'`);
