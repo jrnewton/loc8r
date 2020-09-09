@@ -12,7 +12,8 @@ module.exports = {
         "ecmaVersion": 11
     },
     "rules": {
-        "strict": [2, "global"]
+        "strict": [2, "global"], 
+        "semi": ['error', 'always']
     },
     "ignorePatterns": [
         "public/javascripts/*.js" /* third party stuff */, 
