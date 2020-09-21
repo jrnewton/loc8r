@@ -5,7 +5,86 @@ const debug = require('debug')('meanwifi:controllers');
 /* eslint-disable */
 const db = require("../models/db");
 
-const reviewsCreate = (req, res) => { };
+function updateAverageRating(location) { 
+  if (location.reviews) { 
+    let avgRating = 0;
+
+    if (location.reviews.length == 0) { 
+      avgRating = 0;
+    }
+    else { 
+      const count = location.reviews.length;
+      const total = location.reviews.reduce( (accumulator, {rating}) => { 
+        return accumulator + rating;
+      }, 0);
+      avgRating = parseInt(total / count, 10);
+    }
+    debug(`new avg rating is ${avgRating}`);
+
+    location.rating = avgRating;
+    location.save( (error, location) => { 
+      if (error) { 
+        console.error(error.message);
+      }
+      else { 
+        debug(`avg rating for location ${location._id} updated to ${location.rating}`);
+      }
+    });
+  }
+}
+
+function addReview(req, res, location) { 
+  const newReview = {
+    author: req.body.author,
+    rating: parseInt(req.body.rating, 10),
+    reviewText: req.body.reviewText
+  };
+
+  location.reviews.push(newReview);
+  debug("review pushed");
+
+  location.save( (error, location) => {
+    
+    if (error) { 
+      return res.status(500).json( { "message": error.message } );
+    }
+    else { 
+      debug("location saved");
+
+      const theNewReview = location.reviews.slice(-1).pop(); //[location.reviews.length -1];
+
+      updateAverageRating(location);
+
+      return res.status(201).json(theNewReview);
+    }
+  });
+}
+
+const reviewsCreate = (req, res) => {
+  const locationId = req.params.locationid;
+  const valid = mongoose.Types.ObjectId.isValid(locationId);
+  debug(`locationsReadOne id='${locationId}', valid=${valid}`);
+
+  if (!valid) { 
+    return res.status(404).json({ "message": 'location id not valid' });
+  }
+
+  db.Location
+    .findById(locationId)
+    .select('_id reviews')
+    .exec( (error, location) => { 
+      if (error) { 
+        return res.status(500).json({ "message": error.message });
+      }
+      else if (!location) { 
+        return res.status(404).json( { "message": 'location not found' });
+      }
+      else {
+        return addReview(req, res, location);
+      }
+    });
+};
+
 const reviewsReadOne = (req, res) => { 
   const id = req.params.locationid;
   const reviewId = req.params.reviewid;
@@ -57,9 +136,7 @@ const reviewsReadOne = (req, res) => {
           }
         }
         else { 
-          return res.status(404).json({
-            "message": `no reviews for location ${id}`
-          });
+          return res.status(404).json({"message": 'no reviews for location'} );
         }
       }
     });
