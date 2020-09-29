@@ -1,0 +1,14 @@
+{ 
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "checkJs": true
+  },
+  "exclude": [
+    "node_modules",
+    "public/javascripts",
+    "test",
+    ".eslintrc.js"
+  ]
+}

@@ -21,7 +21,7 @@ const reviewSchema = new mongoose.Schema({
     required: true
   },
   author: { 
-    type: Number,
+    type: String,
     required: true
   },
   createdOn: { 
@@ -30,7 +30,7 @@ const reviewSchema = new mongoose.Schema({
     required: true
   },
   reviewText: { 
-    type: Number,
+    type: String,
     required: true
   }
 });
