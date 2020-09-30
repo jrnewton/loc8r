@@ -8,6 +8,8 @@ Live demo: http://meanwifi.herokuapp.com/
 
 [Errata and notes on the book](ERRATA.md)
 
+[Blog covering this project](https://www.3plb.com)
+
 ## Differences between book code and this app
 
 - Handlebars for UI templating instead of pug.  See below.
