@@ -6,6 +6,8 @@ The Loc8r App lists nearby places with Wi-Fi where people can go to get some wor
 
 Live demo: http://meanwifi.herokuapp.com/
 
+[Errata and notes on the book](ERRATA.md)
+
 ## Differences between book code and this app
 
 - Handlebars for UI templating instead of pug.  See below.
