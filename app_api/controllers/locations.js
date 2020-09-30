@@ -4,6 +4,19 @@ const mongoose = require('mongoose');
 const debug = require('debug')('meanwifi:controllers');
 const db = require("../models/db");
 
+function validateParam(paramName, paramValue, res) { 
+  debug(`validateParam: ${paramName}=${paramValue}`);
+  if (paramValue) { 
+    return true;
+  }
+  else {
+    res.status(400).json({ 
+      "message": `Param '${paramName}' required`
+    });
+    return false;
+  }
+}
+
 const locationsList = (req, res) => { 
   debug('locationsList');
 
@@ -19,19 +32,6 @@ const locationsList = (req, res) => {
     }
   });
 };
-
-function validateParam(paramName, paramValue, res) { 
-  debug(`validateParam: ${paramName}=${paramValue}`);
-  if (paramValue) { 
-    return true;
-  }
-  else {
-    res.status(400).json({ 
-      "message": `Param '${paramName}' required`
-    });
-    return false;
-  }
-}
 
 const locationsListByDistance = (req, res) => { 
   debug(`locationsListByDistance params=${JSON.stringify(req.query)}`);
@@ -129,28 +129,53 @@ const locationsListByDistance = (req, res) => {
   }
 };
 
-const locationsCreate = (req, res) => { 
-  const newLocation = {
-    name: req.body.name, 
-    address: req.body.address,
-    //rating: req.body.rating,
-    facilities: req.body.facilities.split(','),
-    coords: {
-      type: "Point", 
-      coordinates: [
-        parseFloat(req.body.lng),
-        parseFloat(req.body.lat)
-      ]
-    } 
-    /*
-    openingHours: { 
-      days: "Monday - Friday",
-      openingTime: "7:00am",
-      closingTime: "7:00pm",
-      closed: false
-    }*/
+function createOrUpdateLocation(req, existingLocation) { 
+  if (!existingLocation) { 
+    existingLocation = {};
+    debug('creating new location');
+  }
+
+  existingLocation.name = req.body.name;
+  existingLocation.address = req.body.address,
+  existingLocation.facilities = req.body.facilities.split(',');
+  existingLocation.coords = {
+    type: "Point", 
+    coordinates: [
+      parseFloat(req.body.lng),
+      parseFloat(req.body.lat)
+    ]
   };
   
+  if (req.body.days1) { 
+    existingLocation.openingHours = [];
+    existingLocation.openingHours.push(
+      {
+        days: req.body.days1,
+        opening: req.body.opening1,
+        closing: req.body.closing1,
+        closed: req.body.closed1
+      }
+    );
+
+    if (req.body.days2) { 
+      existingLocation.openingHours.push(
+        {
+          days: req.body.days2,
+          opening: req.body.opening2,
+          closing: req.body.closing2,
+          closed: req.body.closed2,
+        }
+      );
+    }
+  }
+
+  debug(`createOrUpdateLocation: ${existingLocation.name}`);
+
+  return existingLocation;
+}
+
+const locationsCreate = (req, res) => { 
+  const newLocation = createOrUpdateLocation(req);
   debug(`locationsCreate name=${newLocation.name}`);
 
   db.Location.create(newLocation, (error, location) => { 
@@ -188,9 +213,37 @@ const locationsReadOne = (req, res) => {
 };
 
 const locationsUpdateOne = (req, res) => { 
-  res
-    .status(200)
-    .json({"status" : "success"});
+  const id = req.params.locationid;
+  const valid = mongoose.Types.ObjectId.isValid(id);
+  debug(`locationsUpdateOne id='${id}', valid=${valid}`);
+
+  if (!valid) { 
+    return res.status(404).json({ "message": 'location id not valid' });
+  }
+
+  db.Location
+    .findById(id)
+    .select('-reviews -rating')
+    .exec((error, location) => { 
+      if (error) {
+        return res.status(500).json({ "message": error.message });
+      } else if (!location) {
+        return res.status(404);
+      }
+      else {
+        const updatedLocation = createOrUpdateLocation(req, location);
+        updatedLocation.save((error, location) => { 
+          if (error) { 
+            return res.status(500).json({ "message": error.message });
+          } else if (!location) {
+            return res.status(404);
+          }
+          else { 
+            return res.status(200).json(location);
+          }
+        });
+      }
+    });
 };
 
 const locationsDeleteOne = (req, res) => { 
