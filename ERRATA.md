@@ -15,12 +15,11 @@ useUnifiedTopology: true, useCreateIndex: true
 
 ## Chapter 6
 
-- Page 180 et al: Using the 'limit' param in geoOptions will give 
+- Page 180 et al: Using the 'limit' param in geoOptions will give the following.  Use [this code instead](https://github.com/rocketnewton/meanwifi/blob/c4b1b899a3d515619fe21b10b11f16945562554b/app_api/controllers/locations.js#L79).
 ```
 $geoNear no longer supports the 'limit' parameter. Use a $limit stage instead
 ```
-Use [this code instead](https://github.com/rocketnewton/meanwifi/blob/c4b1b899a3d515619fe21b10b11f16945562554b/app_api/controllers/locations.js#L79).
-
+  
 - Page 182:  the Extra credit blurb (pass in max distance) indicates the code is on the author's github but I do not see it. 
 
 - Page 187 / Listing 6.5
