@@ -16,13 +16,18 @@ db.ready.then( () => {
 });
 
 function findById(id) {
-  const valid = mongoose.Types.ObjectId.isValid(id);
+  const valid = mongoose.isValidObjectId(id);
   db.Location.findById(id).select('_id name').exec( (error, location) => { 
     if (error) { 
       console.log(`[${id}] valid? ${valid}, got error: ${error}`);
     }
     else { 
-      console.log(`[${id}] valid? ${valid}, found it: ${location}`);
+      if (location) { 
+        console.log(`[${id}] valid? ${valid}, found it: ${location}`);
+      }
+      else { 
+        console.log(`[${id}] valid? ${valid}, not found: ${location}`);
+      }
     }
   });
 }
