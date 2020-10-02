@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "start": "node server.js",
     "debug": "DEBUG=meanwifi:* nodemon",
-    "show-node-procs": "ps -ef | grep \"node \" | grep -v \"grep\""
+    "kill-node": "ps -ef | grep \"node \" | grep -v \"grep\" | awk '{print $2}' | xargs kill"
   },
   "repository": {
     "type": "git",
