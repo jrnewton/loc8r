@@ -203,7 +203,7 @@ const locationsReadOne = (req, res) => {
   const id = req.params.locationid;
   //Validate the id with mongo, otherwise findById returns an error (instead of null result)
   //I want to differntiate that type of error with something more severe... 
-  const valid = mongoose.Types.ObjectId.isValid(id);
+  const valid = mongoose.isValidObjectId(id);
   debug(`locationsReadOne id='${id}', valid=${valid}`);
 
   if (!valid) { 
@@ -225,7 +225,7 @@ const locationsReadOne = (req, res) => {
 
 const locationsUpdateOne = (req, res) => { 
   const id = req.params.locationid;
-  const valid = mongoose.Types.ObjectId.isValid(id);
+  const valid = mongoose.isValidObjectId(id);
   debug(`locationsUpdateOne id='${id}', valid=${valid}`);
 
   if (!valid) { 
