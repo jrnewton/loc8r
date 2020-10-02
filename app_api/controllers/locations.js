@@ -25,7 +25,7 @@ const locationsList = (req, res) => {
       return res.status(500).json({ "message": error.message });
     }
     else if (!locations) { 
-      return res.status(404);
+      return res.status(404).json({ "message": "location not found" });
     }
     else { 
       return res.status(200).json(locations);
@@ -135,16 +135,27 @@ function createOrUpdateLocation(req, existingLocation) {
     debug('creating new location');
   }
 
-  existingLocation.name = req.body.name;
-  existingLocation.address = req.body.address,
-  existingLocation.facilities = req.body.facilities.split(',');
-  existingLocation.coords = {
-    type: "Point", 
-    coordinates: [
-      parseFloat(req.body.lng),
-      parseFloat(req.body.lat)
-    ]
-  };
+  if (req.body.name) {
+    existingLocation.name = req.body.name;
+  }
+
+  if (req.body.address) {
+    existingLocation.address = req.body.address;
+  }
+
+  if (req.body.facilities) {
+    existingLocation.facilities = req.body.facilities.split(',');
+  }
+
+  if (req.body.lng && req.body.lat) { 
+    existingLocation.coords = {
+      type: "Point", 
+      coordinates: [
+        parseFloat(req.body.lng),
+        parseFloat(req.body.lat)
+      ]
+    };
+  }
   
   if (req.body.days1) { 
     existingLocation.openingHours = [];
@@ -204,7 +215,7 @@ const locationsReadOne = (req, res) => {
     if (error) { 
       return res.status(500).json({ "message": error.message });
     } else if (!location) {
-      return res.status(404);
+      return res.status(404).json({"message": 'location not found' });
     }
     else { 
       return res.status(200).json(location);
@@ -228,7 +239,7 @@ const locationsUpdateOne = (req, res) => {
       if (error) {
         return res.status(500).json({ "message": error.message });
       } else if (!location) {
-        return res.status(404);
+        return res.status(404).json({ "message": 'location not found' });
       }
       else {
         const updatedLocation = createOrUpdateLocation(req, location);
