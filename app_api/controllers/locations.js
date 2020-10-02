@@ -258,9 +258,30 @@ const locationsUpdateOne = (req, res) => {
 };
 
 const locationsDeleteOne = (req, res) => { 
-  res
-    .status(200)
-    .json({"status" : "success"});
+  const id = req.params.locationid;
+
+  const valid = mongoose.isValidObjectId(id);
+  debug(`locationsDeleteOne id='${id}', valid=${valid}`);
+
+  if (!valid) { 
+    return res.status(404).json({ "message": 'location id not valid' });
+  }
+
+  db.Location.findByIdAndDelete(id, (error, location) => {
+    if (error) {
+      return res.status(500).json({ "message": error.message });
+    }
+    else if (location) { 
+      return res
+        .status(204)
+        .end();
+    }
+    else {
+      return res
+        .status(404)
+        .json({"message": 'location not found'});
+    }
+  });
 };
 
 module.exports = {
