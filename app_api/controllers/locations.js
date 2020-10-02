@@ -4,22 +4,6 @@ const mongoose = require('mongoose');
 const debug = require('debug')('meanwifi:controllers');
 const db = require("../models/db");
 
-const locationsList = (req, res) => { 
-  debug('locationsList');
-
-  db.Location.find( (error, locations) => {
-    if (error) { 
-      return res.status(500).json({ "message": error.message });
-    }
-    else if (!locations) { 
-      return res.status(404);
-    }
-    else { 
-      return res.status(200).json(locations);
-    }
-  });
-};
-
 function validateParam(paramName, paramValue, res) { 
   debug(`validateParam: ${paramName}=${paramValue}`);
   if (paramValue) { 
@@ -32,6 +16,22 @@ function validateParam(paramName, paramValue, res) {
     return false;
   }
 }
+
+const locationsList = (req, res) => { 
+  debug('locationsList');
+
+  db.Location.find( (error, locations) => {
+    if (error) { 
+      return res.status(500).json({ "message": error.message });
+    }
+    else if (!locations) { 
+      return res.status(404).json({ "message": "location not found" });
+    }
+    else { 
+      return res.status(200).json(locations);
+    }
+  });
+};
 
 const locationsListByDistance = (req, res) => { 
   debug(`locationsListByDistance params=${JSON.stringify(req.query)}`);
@@ -129,28 +129,64 @@ const locationsListByDistance = (req, res) => {
   }
 };
 
-const locationsCreate = (req, res) => { 
-  const newLocation = {
-    name: req.body.name, 
-    address: req.body.address,
-    //rating: req.body.rating,
-    facilities: req.body.facilities.split(','),
-    coords: {
+function createOrUpdateLocation(req, existingLocation) { 
+  if (!existingLocation) { 
+    existingLocation = {};
+    debug('creating new location');
+  }
+
+  if (req.body.name) {
+    existingLocation.name = req.body.name;
+  }
+
+  if (req.body.address) {
+    existingLocation.address = req.body.address;
+  }
+
+  if (req.body.facilities) {
+    existingLocation.facilities = req.body.facilities.split(',');
+  }
+
+  if (req.body.lng && req.body.lat) { 
+    existingLocation.coords = {
       type: "Point", 
       coordinates: [
         parseFloat(req.body.lng),
         parseFloat(req.body.lat)
       ]
-    } 
-    /*
-    openingHours: { 
-      days: "Monday - Friday",
-      openingTime: "7:00am",
-      closingTime: "7:00pm",
-      closed: false
-    }*/
-  };
+    };
+  }
   
+  if (req.body.days1) { 
+    existingLocation.openingHours = [];
+    existingLocation.openingHours.push(
+      {
+        days: req.body.days1,
+        opening: req.body.opening1,
+        closing: req.body.closing1,
+        closed: req.body.closed1
+      }
+    );
+
+    if (req.body.days2) { 
+      existingLocation.openingHours.push(
+        {
+          days: req.body.days2,
+          opening: req.body.opening2,
+          closing: req.body.closing2,
+          closed: req.body.closed2,
+        }
+      );
+    }
+  }
+
+  debug(`createOrUpdateLocation: ${existingLocation.name}`);
+
+  return existingLocation;
+}
+
+const locationsCreate = (req, res) => { 
+  const newLocation = createOrUpdateLocation(req);
   debug(`locationsCreate name=${newLocation.name}`);
 
   db.Location.create(newLocation, (error, location) => { 
@@ -179,7 +215,7 @@ const locationsReadOne = (req, res) => {
     if (error) { 
       return res.status(500).json({ "message": error.message });
     } else if (!location) {
-      return res.status(404);
+      return res.status(404).json({"message": 'location not found' });
     }
     else { 
       return res.status(200).json(location);
@@ -188,15 +224,64 @@ const locationsReadOne = (req, res) => {
 };
 
 const locationsUpdateOne = (req, res) => { 
-  res
-    .status(200)
-    .json({"status" : "success"});
+  const id = req.params.locationid;
+  const valid = mongoose.Types.ObjectId.isValid(id);
+  debug(`locationsUpdateOne id='${id}', valid=${valid}`);
+
+  if (!valid) { 
+    return res.status(404).json({ "message": 'location id not valid' });
+  }
+
+  db.Location
+    .findById(id)
+    .select('-reviews -rating')
+    .exec((error, location) => { 
+      if (error) {
+        return res.status(500).json({ "message": error.message });
+      } else if (!location) {
+        return res.status(404).json({ "message": 'location not found' });
+      }
+      else {
+        const updatedLocation = createOrUpdateLocation(req, location);
+        updatedLocation.save((error, location) => { 
+          if (error) { 
+            return res.status(500).json({ "message": error.message });
+          } else if (!location) {
+            return res.status(404);
+          }
+          else { 
+            return res.status(200).json(location);
+          }
+        });
+      }
+    });
 };
 
 const locationsDeleteOne = (req, res) => { 
-  res
-    .status(200)
-    .json({"status" : "success"});
+  const id = req.params.locationid;
+
+  const valid = mongoose.isValidObjectId(id);
+  debug(`locationsDeleteOne id='${id}', valid=${valid}`);
+
+  if (!valid) { 
+    return res.status(404).json({ "message": 'location id not valid' });
+  }
+
+  db.Location.findByIdAndDelete(id, (error, location) => {
+    if (error) {
+      return res.status(500).json({ "message": error.message });
+    }
+    else if (location) { 
+      return res
+        .status(204)
+        .end();
+    }
+    else {
+      return res
+        .status(404)
+        .json({"message": 'location not found'});
+    }
+  });
 };
 
 module.exports = {

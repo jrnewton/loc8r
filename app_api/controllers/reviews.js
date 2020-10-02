@@ -33,12 +33,21 @@ function updateAverageRating(location) {
   }
 }
 
+function createOrUpdateReview(req, existingReview) { 
+  if (!existingReview) { 
+    existingReview = {};
+    debug('create new review');
+  }
+
+  existingReview.author = req.body.author;
+  existingReview.rating = parseInt(req.body.rating, 10);
+  existingReview.reviewText = req.body.reviewText;
+
+  return existingReview;
+}
+
 function addReview(req, res, location) { 
-  const newReview = {
-    author: req.body.author,
-    rating: parseInt(req.body.rating, 10),
-    reviewText: req.body.reviewText
-  };
+  const newReview = createOrUpdateReview(req);
 
   location.reviews.push(newReview);
   debug("review pushed");
@@ -101,7 +110,6 @@ const reviewsReadOne = (req, res) => {
   if (!reviewIdValid) {
     return res.status(404).json({ "message": 'review id not valid' });
   }
-  
 
   db.Location
     .findById(id)
@@ -141,7 +149,58 @@ const reviewsReadOne = (req, res) => {
       }
     });
 };
-const reviewsUpdateOne = (req, res) => { };
+const reviewsUpdateOne = (req, res) => { 
+  const id = req.params.locationid;
+  const reviewId = req.params.reviewid;
+  
+  const idValid = mongoose.Types.ObjectId.isValid(id);
+  const reviewIdValid = mongoose.Types.ObjectId.isValid(reviewId);
+
+  debug(`reviewsUpdateOne id=${id}; valid=${idValid}, reviewId=${reviewId}; valid=${reviewIdValid}`);
+
+  if (!idValid) {
+    return res.status(404).json({ "message": 'location id not valid' });
+  }
+
+  if (!reviewIdValid) {
+    return res.status(404).json({ "message": 'review id not valid' });
+  }
+
+  db.Location
+    .findById(id)
+    //The select() method accepts a space-separated string of the paths you want to retrieve.
+    .select('_id name reviews')
+    .exec( (error, location) => { 
+      
+      //mongoose returns error when bad ID is provided... 
+      if (error) { 
+        return res.status(500).json({ "message": error.message });
+      }
+      else if (!location) {
+        return res.status(404).json({ "message": 'location id not found' });
+      }
+      //found location
+      else {
+        debug(`success retrieving location '${id}'`);
+        if (location.reviews && location.reviews.length > 0) { 
+          const review = location.reviews.id(reviewId);
+          if (!review) { 
+            return res.status(404).json({ "message": 'review id not found' });
+          }
+          else { 
+            debug(`success retrieving review '${reviewId}'`);
+            const updatedReview = createOrUpdateReview(req, review);
+            //TODO save it 
+          }
+        }
+        else { 
+          return res.status(404).json({"message": 'no reviews for location'} );
+        }
+      }
+    });
+
+
+};
 const reviewsDeleteOne = (req, res) => { };
 
 module.exports = {

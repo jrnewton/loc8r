@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "start": "node server.js",
     "debug": "DEBUG=meanwifi:* nodemon",
-    "show-node-procs": "ps -ef | grep \"node \" | grep -v \"grep\""
+    "kill-node": "ps -ef | grep \"node \" | grep -v \"grep\" | awk '{print $2}' | xargs kill"
   },
   "repository": {
     "type": "git",
@@ -34,9 +34,12 @@
     "serve-favicon": "2.5.0"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.7.36",
+    "@types/node": "14.11.2",
     "eslint": "7.4.0",
     "mocha": "8.1.2",
     "nodemon": "2.0.4",
-    "supertest": "4.0.2"
+    "supertest": "4.0.2",
+    "typescript": "4.0.3"
   }
 }
