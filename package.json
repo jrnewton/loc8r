@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rocketnewton/meanwifi.git"
+    "url": "git+https://github.com/jrnewton/meanwifi.git"
   },
   "author": "Jon Newton",
   "license": "GPLv3",
   "bugs": {
-    "url": "https://github.com/rocketnewton/meanwifi/issues"
+    "url": "https://github.com/jrnewton/meanwifi/issues"
   },
   "engines": {
     "node": ">=14.0.0",

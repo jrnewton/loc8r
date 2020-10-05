@@ -71,7 +71,7 @@ function addReview(req, res, location) {
 
 const reviewsCreate = (req, res) => {
   const locationId = req.params.locationid;
-  const valid = mongoose.Types.ObjectId.isValid(locationId);
+  const valid = mongoose.isValidObjectId(locationId);
   debug(`locationsReadOne id='${locationId}', valid=${valid}`);
 
   if (!valid) { 
@@ -98,8 +98,8 @@ const reviewsReadOne = (req, res) => {
   const id = req.params.locationid;
   const reviewId = req.params.reviewid;
   
-  const idValid = mongoose.Types.ObjectId.isValid(id);
-  const reviewIdValid = mongoose.Types.ObjectId.isValid(reviewId);
+  const idValid = mongoose.isValidObjectId(id);
+  const reviewIdValid = mongoose.isValidObjectId(reviewId);
 
   debug(`reviewsReadOne id=${id}; valid=${idValid}, reviewId=${reviewId}; valid=${reviewIdValid}`);
 
@@ -153,8 +153,8 @@ const reviewsUpdateOne = (req, res) => {
   const id = req.params.locationid;
   const reviewId = req.params.reviewid;
   
-  const idValid = mongoose.Types.ObjectId.isValid(id);
-  const reviewIdValid = mongoose.Types.ObjectId.isValid(reviewId);
+  const idValid = mongoose.isValidObjectId(id);
+  const reviewIdValid = mongoose.isValidObjectId(reviewId);
 
   debug(`reviewsUpdateOne id=${id}; valid=${idValid}, reviewId=${reviewId}; valid=${reviewIdValid}`);
 
