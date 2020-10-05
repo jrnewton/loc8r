@@ -1,11 +1,11 @@
 # Dev Environment Setup
 * configure git name and email
 ```
-  git config --global user.email "rocketnewton@gmail.com"
+  git config --global user.email "newt@hey.com"
   git config --global user.name "Jon Newton"
 ```
 * add public key to github 
-* clone our code - git clone git@github.com:rocketnewton/meanwifi.git
+* clone our code - git clone git@github.com:jrnewton/meanwifi.git
 * clone example code - git clone https://github.com/cliveharber/gettingMean-2.git
 * sudo apt install nodejs
 * sudo apt install npm 
