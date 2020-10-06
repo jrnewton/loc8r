@@ -2,7 +2,6 @@
 
 const mongoose = require('mongoose');
 const debug = require('debug')('meanwifi:controllers');
-/* eslint-disable */
 const db = require("../models/db");
 
 function updateAverageRating(location) { 
@@ -201,11 +200,16 @@ const reviewsUpdateOne = (req, res) => {
 
 
 };
-const reviewsDeleteOne = (req, res) => { };
+
+const reviewsDeleteOne = (req, res) => { 
+  return res
+        .status(200)
+        .end();
+};
 
 module.exports = {
   reviewsCreate, 
   reviewsReadOne, 
   reviewsUpdateOne,
   reviewsDeleteOne
-}
+};
