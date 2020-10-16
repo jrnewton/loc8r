@@ -194,7 +194,7 @@ const reviewsUpdateOne = (req, res) => {
               if (error) { 
                 return res.status(500).json({ "message": error.message });
               } else if (!location) {
-                return res.status(404);
+                return res.status(404).json({ "message": "location not found"});
               }
               else { 
                 return res.status(200).json(location);
@@ -212,9 +212,52 @@ const reviewsUpdateOne = (req, res) => {
 };
 
 const reviewsDeleteOne = (req, res) => { 
-  return res
-        .status(200)
-        .end();
+  const id = req.params.locationid;
+  const reviewId = req.params.reviewid;
+  
+  const idValid = mongoose.isValidObjectId(id);
+  const reviewIdValid = mongoose.isValidObjectId(reviewId);
+
+  debug(`reviewsDeleteOne id=${id}; valid=${idValid}, reviewId=${reviewId}; valid=${reviewIdValid}`);
+
+  if (!idValid) {
+    return res.status(404).json({ "message": 'location id not valid' });
+  }
+
+  if (!reviewIdValid) {
+    return res.status(404).json({ "message": 'review id not valid' });
+  }
+
+  db.Location
+    .findById(id)
+    .select('_id name reviews')
+    .exec( (error, location) => { 
+      
+      if (error) { 
+        return res.status(500).json({ "message": error.message });
+      }
+      else if (!location) {
+        return res.status(404).json({ "message": 'location id not found' });
+      }
+      //found location
+      else {
+        debug(`success retrieving location '${id}'`);
+        if (location.reviews && location.reviews.length > 0) { 
+          location.reviews.id(reviewId).remove();
+          //save parent location 
+          location.save((error, location) => { 
+            if (error) { 
+              return res.status(500).json({ "message": error.message });
+            } else if (!location) {
+              return res.status(404).json({ "message": "location not found"});
+            }
+            else { 
+              return res.status(204).end();
+            }
+          });
+        }
+      }
+    });
 };
 
 module.exports = {
