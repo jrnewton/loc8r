@@ -27,7 +27,7 @@ const locationsList = (req, res) => {
     else if (!locations) { 
       return res.status(404).json({ "message": "location not found" });
     }
-    else { 
+    else {
       return res.status(200).json(locations);
     }
   });
@@ -247,7 +247,7 @@ const locationsUpdateOne = (req, res) => {
           if (error) { 
             return res.status(500).json({ "message": error.message });
           } else if (!location) {
-            return res.status(404);
+            return res.status(404).json({ "message": "location not found"});
           }
           else { 
             return res.status(200).json(location);
@@ -271,15 +271,13 @@ const locationsDeleteOne = (req, res) => {
     if (error) {
       return res.status(500).json({ "message": error.message });
     }
-    else if (location) { 
+    else if (!location) { 
       return res
-        .status(204)
-        .end();
+      .status(404)
+      .json({"message": 'location not found'});
     }
-    else {
-      return res
-        .status(404)
-        .json({"message": 'location not found'});
+    else { 
+      return res.status(204).end();
     }
   });
 };
