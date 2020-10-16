@@ -189,7 +189,17 @@ const reviewsUpdateOne = (req, res) => {
           else { 
             debug(`success retrieving review '${reviewId}'`);
             const updatedReview = createOrUpdateReview(req, review);
-            //TODO save it 
+            //save parent location 
+            location.save((error, location) => { 
+              if (error) { 
+                return res.status(500).json({ "message": error.message });
+              } else if (!location) {
+                return res.status(404);
+              }
+              else { 
+                return res.status(200).json(location);
+              }
+            });
           }
         }
         else { 
