@@ -1,4 +1,4 @@
-![lint](https://github.com/jrnewton/meanwifi/workflows/lint/badge.svg) ![CodeQL](https://github.com/jrnewton/meanwifi/workflows/CodeQL/badge.svg)
+[![lint](https://github.com/jrnewton/meanwifi/workflows/lint/badge.svg)](https://github.com/jrnewton/meanwifi/actions?query=workflow%3Alint) [![test](https://github.com/jrnewton/meanwifi/workflows/test/badge.svg)](https://github.com/jrnewton/meanwifi/actions?query=workflow%3Atest) [![CodeQL](https://github.com/jrnewton/meanwifi/workflows/CodeQL/badge.svg)](https://github.com/jrnewton/meanwifi/actions?query=workflow%3ACodeQL)
 
 # Example App using the MEAN stack
 
