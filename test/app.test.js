@@ -15,7 +15,7 @@ function subStringWithEllipsis(string) {
 }
 
 const expectPrinter = function(res) { 
-  //debug(`status=${res.status}, text=${subStringWithEllipsis(res.text)}`);
+  debug(`status=${res.status}, text=${subStringWithEllipsis(res.text)}`);
 };
 
 describe("API smoke tests", function() {
@@ -28,10 +28,10 @@ describe("API smoke tests", function() {
       .type('form')
       .send( { name: 'Bubble Test', address: '949 Sky Valley Drive Palm Springs CA', facilities: 'wifi', lng: '-71.058884', lat: '42.360081' } )
       .expect(201)
+      //.expect(expectPrinter)
       .expect(function(res) { 
         location.id = res.body._id;
-      })
-      .expect(expectPrinter);
+      });
   });
   
   it("get single location", function(done) { 
@@ -52,7 +52,7 @@ describe("API smoke tests", function() {
     request
       .get('/api/locationsbygeo?lng=-0.7992599&lat=51.378091&maxDistance=20000')
       .expect(200)
-      .expect(expectPrinter)
+      //.expect(expectPrinter)
       .end(done);
   });
 
@@ -69,7 +69,7 @@ describe("API smoke tests", function() {
     request
       .get('/api/locations/1234')
       .expect(404)
-      .expect(expectPrinter)
+      //.expect(expectPrinter)
       .end(done);
   });
 
@@ -77,7 +77,7 @@ describe("API smoke tests", function() {
     request
       .get('/api/locations/5f1edd81e40e5fb13c63c3b8/reviews/1234')
       .expect(404)
-      .expect(expectPrinter)
+      //.expect(expectPrinter)
       .end(done);
   });
 
@@ -99,7 +99,7 @@ describe("API smoke tests", function() {
       request
         .del('/api/locations/' + location.id)
         .expect(204)
-        .expect(expectPrinter)
+        //.expect(expectPrinter)
         .end(closeDb);
     }
     else { 
