@@ -2,6 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+    "type": "node-terminal",
+    "name": "mocha",
+    "request": "launch",
+    "command": "npm run test",
+    "cwd": "${workspaceFolder}"
+    },
+    {
       "type": "node-terminal",
       "name": "debug",
       "request": "launch",
