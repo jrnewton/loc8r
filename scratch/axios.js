@@ -7,19 +7,19 @@ const axios = require('axios');
     const response = await axios.get(
       'https://jsonplaceholder.typicode.com/todos/1'
     );
-    console.log('response: ', response.data);
+    console.log('test 1', response.data);
   } catch (error) {
-    console.error(error.message);
+    console.error('test 1', error.message);
   }
 })();
 
 axios
   .get('https://jsonplaceholder.typicode.com/xtodos/1')
   .then((response) => {
-    console.log('response: ', response.data);
+    console.log('test 2', response.data);
   })
   .catch((error) => {
-    console.error('got an error ', error.message);
+    console.error('test 2', error.message);
   });
 
 (async function getWithParam() {
@@ -33,8 +33,35 @@ axios
         }
       }
     );
-    console.log(response.data);
+    console.log('test 3', response.data);
   } catch (error) {
-    console.log(error);
+    console.log('test 3', error);
   }
 })();
+
+axios
+  .get('https://jsonplaceholder.typicode.com/xtodos/1')
+  .then((response) => {
+    console.log('test 4', response.data);
+  })
+  .catch((error) => {
+    console.error('test 4', error.message);
+  });
+
+const config = {
+  url: 'https://jsonplaceholder.typicode.com/posts',
+  method: 'get',
+  params: {
+    userId: 1,
+    id: 1
+  }
+};
+
+axios
+  .request(config)
+  .then((response) => {
+    console.log('test 5', response.data);
+  })
+  .catch((error) => {
+    console.log('test 5', error);
+  });
