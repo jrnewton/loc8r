@@ -11,8 +11,8 @@ const indexRouter = require('./app_server/routes/index');
 const apiRouter = require('./app_api/routes/index');
 const db = require('./app_api/models/db');
 
-//Does our db layer work? 
-db.Location.find( (err, res) => {
+//Does our db layer work?
+db.Location.find((err, res) => {
   if (err) return console.error(err);
   debug(`# of locations = ${res.length}`);
 });
@@ -36,12 +36,12 @@ app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res /*not used: next */) {
+app.use(function (err, req, res /*not used: next */) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

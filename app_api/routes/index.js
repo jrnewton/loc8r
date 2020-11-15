@@ -19,12 +19,11 @@ locRoute.get(ctrlLocations.locationsReadOne);
 const reviewRoute = router.route('/locations/:locationid/reviews/:reviewid');
 reviewRoute.get(ctrlReviews.reviewsReadOne);
 
+if (!runtime.options.readOnly) {
+  locListRoute.post(ctrlLocations.locationsCreate);
 
-if (!runtime.options.readOnly) { 
-  locListRoute
-    .post(ctrlLocations.locationsCreate);
-
-  router.route('/locations/:locationid/reviews')
+  router
+    .route('/locations/:locationid/reviews')
     .post(ctrlReviews.reviewsCreate);
 
   locRoute

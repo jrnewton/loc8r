@@ -9,49 +9,46 @@ const runtime = require('./runtime');
 
 runtime.printOptions();
 
-app.ready.then( (result) => { 
-  debug(result);
-  
-  const port = runtime.options.port;
-  app.set('port', port);
+app.ready
+  .then((result) => {
+    debug(result);
 
-  const server = http.createServer(app);
-  server.listen(port);
-  
-  server.on('error', (error) => { 
-    if (error.syscall !== 'listen') {
-      throw error;
-    }
+    const port = runtime.options.port;
+    app.set('port', port);
 
-    let bind = typeof port === 'string'
-      ? 'Pipe ' + port
-      : 'Port ' + port;
+    const server = http.createServer(app);
+    server.listen(port);
 
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-      case 'EACCES':
-        console.error(bind + ' requires elevated privileges');
-        process.exit(1);
-        break;
-      case 'EADDRINUSE':
-        console.error(bind + ' is already in use');
-        process.exit(1);
-        break;
-      default:
+    server.on('error', (error) => {
+      if (error.syscall !== 'listen') {
         throw error;
-    }
+      }
+
+      let bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+
+      // handle specific listen errors with friendly messages
+      switch (error.code) {
+        case 'EACCES':
+          console.error(bind + ' requires elevated privileges');
+          process.exit(1);
+          break;
+        case 'EADDRINUSE':
+          console.error(bind + ' is already in use');
+          process.exit(1);
+          break;
+        default:
+          throw error;
+      }
+    });
+
+    server.on('listening', () => {
+      let addr = server.address();
+      let bind =
+        typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+      debug('Listening on ' + bind);
+    });
+  })
+  .catch((error) => {
+    console.error(error);
+    app.dbConnection.close();
   });
-
-  server.on('listening', () => { 
-    let addr = server.address();
-    let bind = typeof addr === 'string'
-      ? 'pipe ' + addr
-      : 'port ' + addr.port;
-    debug('Listening on ' + bind);
-  });
-
-}).catch( (error) => { 
-  console.error(error);
-  app.dbConnection.close();
-});
-

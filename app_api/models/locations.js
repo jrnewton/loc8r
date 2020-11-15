@@ -16,28 +16,28 @@ const openingTimeSchema = new mongoose.Schema({
 });
 
 const reviewSchema = new mongoose.Schema({
-  rating: { 
+  rating: {
     type: Number,
     required: true
   },
-  author: { 
+  author: {
     type: String,
     required: true
   },
-  createdOn: { 
-    type: Date, 
+  createdOn: {
+    type: Date,
     default: Date.now,
     required: true
   },
-  reviewText: { 
+  reviewText: {
     type: String,
     required: true
   }
 });
 
-const locationSchema = new mongoose.Schema({ 
-  name: { 
-    type: String, 
+const locationSchema = new mongoose.Schema({
+  name: {
+    type: String,
     required: true
   },
   address: {
@@ -49,7 +49,7 @@ const locationSchema = new mongoose.Schema({
     type: {
       type: String,
       enum: ['Point'],
-      default: 'Point',
+      default: 'Point'
     },
     /* To meet the GeoJSON specification, a coordinate pair must be entered
        into the array in the correct order: longitude, then latitude. Valid longitude
@@ -58,23 +58,23 @@ const locationSchema = new mongoose.Schema({
     */
     coordinates: {
       type: [Number],
-      default: [0, 0],
+      default: [0, 0]
     }
   },
-  rating: { 
+  rating: {
     type: Number,
-    'default': 0,  //default is reserved word so be safe and quote it.
-    min: 0, 
+    default: 0, //default is reserved word so be safe and quote it.
+    min: 0,
     max: 5
   },
   facilities: [String],
   distance: String,
   //BUG see #121
-  openingHours: [openingTimeSchema], 
+  openingHours: [openingTimeSchema],
   reviews: [reviewSchema]
 });
 
-locationSchema.index({coords: '2dsphere'});
+locationSchema.index({ coords: '2dsphere' });
 
 /*
   If you use multiple connections, you should make sure you export schemas, not models. 
