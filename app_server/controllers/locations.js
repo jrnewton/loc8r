@@ -2,8 +2,10 @@
 
 const debug = require('debug')('meanwifi:controllers');
 const model = require('../../app_api/models/static');
+const runtime = require('../../runtime');
+const axios = require('axios');
 
-const homeList = (req, res) => {
+const renderHomepage = (req, res, body) => {
   /* locations-list is locations-list.hbs which is rendered inside of layout.hbs */
   res.render('locations-list', {
     title: 'Loc8r - find a place to work with wifi',
@@ -13,8 +15,30 @@ const homeList = (req, res) => {
       tagline: 'Find places to work with wifi near you!'
     },
 
-    locations: model.locations
+    locations: body
   });
+};
+
+const homeList = (req, res) => {
+  const url = `${runtime.options.serviceRootURL}/api/locationsbygeo`;
+  axios
+    .get(url, {
+      params: {
+        lng: -0.9690884,
+        lat: 51.455041,
+        maxDistance: 200
+      }
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        renderHomepage(req, res, response.data);
+      } else {
+        res.status(response.status).json(response.data);
+      }
+    })
+    .catch((error) => {
+      res.status(500).json(error.message);
+    });
 };
 
 const locationInfo = (req, res) => {
