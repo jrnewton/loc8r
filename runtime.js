@@ -16,9 +16,11 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'ro') {
 }
 
 const port = normalizePort(process.env.PORT || '3000');
+const serviceRootURL = `http://localhost:${port}`;
 
 const options = {
   port: port,
+  serviceRootURL: serviceRootURL,
   dbURI: dbURI,
   readOnly: readOnly
 };
