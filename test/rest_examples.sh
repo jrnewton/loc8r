@@ -15,12 +15,12 @@
 #   --url http://localhost:3000/api/locations/5f778a7473fff6ece9e14f1e
 
 # # locations GET
-curl -i --request GET \
-  --url http://localhost:3000/api/locations
+#curl -i --request GET \
+#  --url http://localhost:3000/api/locations
 
 # # locations by geo GET valid
-#curl -i --request GET \
-#  --url 'http://localhost:3000/api/locationsbygeo?lng=-0.795998&lat=51.36505&maxDistance=200'
+curl -i --request GET \
+  --url 'http://localhost:3000/api/locationsbygeo?lng=-0.9765342&lat=51.4530871&maxDistance=2000'
 
 # # locations by geo GET invalid
 # curl -i --request GET \
