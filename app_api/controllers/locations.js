@@ -6,13 +6,14 @@ const db = require('../models/db');
 
 function validateParam(paramName, paramValue, res) {
   debug(`validateParam: ${paramName}=${paramValue}`);
-  if (paramValue) {
-    return true;
-  } else {
+
+  if (!paramValue && paramValue !== 0) {
     res.status(400).json({
       message: `Param '${paramName}' required`
     });
     return false;
+  } else {
+    return true;
   }
 }
 
@@ -22,10 +23,12 @@ const locationsList = (req, res) => {
   db.Location.find((error, locations) => {
     if (error) {
       return res.status(500).json({ message: error.message });
-    } else if (!locations) {
-      return res.status(404).json({ message: 'location not found' });
     } else {
-      return res.status(200).json(locations);
+      if (locations && locations.length !== 0) {
+        return res.status(200).json(locations);
+      } else {
+        return res.status(404).end();
+      }
     }
   });
 };
@@ -67,6 +70,7 @@ const locationsListByDistance = (req, res) => {
     spherical: true,
     //mongodb stores geo data in meters
     maxDistance: maxDistanceMeters
+
     /*  Note: Starting in version 4.2, MongoDB removes the limit 
         and num options for the $geoNear stage as well as the default 
         limit of 100 documents. To limit the results of $geoNear, use 
@@ -80,52 +84,40 @@ const locationsListByDistance = (req, res) => {
   );
 
   try {
-    //Since user input can affect results, return req.query for any status code != 200.
-
     db.Location.aggregate(aggOptions, (error, locations) => {
       if (error) {
-        debug('aggregate returned error', error);
+        debug('aggregate returned an error', error);
         /* If you pass the entire error object then the error.message property is
             not included in JSON.stringify output.  
             Why? It's type and value doesn't fall into any of the cases where stringify 
             would drop it on the floor...  */
         return res.status(500).json({
-          message: error.message,
-          query: req.query
-        });
-      } else if (locations.length === 0) {
-        debug('aggregate returned no locations');
-        return res.status(404).json({
-          query: req.query
+          message: error.message
         });
       } else {
-        debug('aggregate returned results', locations.length);
-        locations = locations.map((result) => {
-          //Quick way to return data: return result as-is with one addition
-          //to the distance property.  This is quick but returns a lot more data not
-          //used on the homepage.
-          //result.distance.display = `${result.distance.calculated.toFixed()}m`;
-          //return result;
-
-          //Method used by the book - return only what is needed for the
-          //homepage display.
-          return {
-            id: result._id,
-            name: result.name,
-            address: result.address,
-            rating: result.rating,
-            facilities: result.facilities,
-            distance: result.distance.calculated
-          };
-        });
-        return res.status(200).json(locations);
+        if (locations && locations.length > 0) {
+          debug('aggregate returned results', locations.length);
+          locations = locations.map((result) => {
+            return {
+              id: result._id,
+              name: result.name,
+              address: result.address,
+              rating: result.rating,
+              facilities: result.facilities,
+              distance: result.distance.calculated
+            };
+          });
+          return res.status(200).json(locations);
+        } else {
+          debug('aggregate returned no results');
+          return res.status(404).end();
+        }
       }
     });
   } catch (error) {
-    debug('caught an error', error);
+    debug('aggregate threw an error', error);
     return res.status(500).json({
-      message: error.message,
-      query: req.query
+      message: error.message
     });
   }
 };

@@ -7,7 +7,7 @@ const runtime = require('../../runtime');
    see https://github.com/axios/axios/issues/1975 */
 const axios = require('axios').default;
 
-const renderHomepage = (req, res, body) => {
+const renderHomepage = (req, res, body, message) => {
   /* locations-list is locations-list.hbs which is rendered inside of layout.hbs */
   res.render('locations-list', {
     title: 'Loc8r - find a place to work with wifi',
@@ -17,7 +17,8 @@ const renderHomepage = (req, res, body) => {
       tagline: 'Find places to work with wifi near you!'
     },
 
-    locations: body
+    locations: body,
+    message: message
   });
 };
 
@@ -50,14 +51,23 @@ const homeList = (req, res) => {
     .then((response) => {
       if (response.status === 200) {
         debug('got 200 from the API');
+        //when status is 200 then data will always be a non-empty array
         response.data.map((item) => {
           item.distance = formatDistance(item.distance);
           return item;
         });
-        renderHomepage(req, res, response.data);
+        renderHomepage(req, res, response.data, null);
+      } else if (response.status === 404) {
+        renderHomepage(req, res, null, 'No results found');
       } else {
         debug('got non-200 from the API', response.status);
-        res.status(response.status).json(response.data);
+
+        let message = '' + response.status;
+        if (response.data.message) {
+          message = message + ': ' + response.data.message;
+        }
+
+        renderHomepage(req, res, null, message);
       }
     })
     .catch((error) => {
@@ -65,7 +75,8 @@ const homeList = (req, res) => {
       if (error.stack) {
         debug(error.stack);
       }
-      res.status(500).json(JSON.stringify(error));
+
+      renderHomepage(req, res, null, `Internal server error ${error.message}`);
     });
 };
 

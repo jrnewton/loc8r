@@ -1,39 +1,45 @@
-<!-- I am rendered inside of layout.hbs --> 
+<!-- I am rendered inside of layout.hbs -->
 
 <div class="row banner">
 	<div class="col-12">
 		<h1>{{pageHeader.title}}
-		<small>{{pageHeader.tagline}}</small>
+			<small>{{pageHeader.tagline}}</small>
 		</h1>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-12 col-md-8">
-		{{#each locations}}
-			<div class="card">
-				<div class="card-block">
-					<h4><a href="/location?id={{this.id}}">{{this.name}}</a>
-						<small>
-							{{#times this.rating}}
-								<i class="fas fa-star"></i>
-							{{/times}}
+		{{#if message }}
+		<h4 id="message">{{ message }}</h4>
+		{{/if}}
 
-							{{#times (subtract 5 this.rating)}}
-								<i class="far fa-star"></i>
-							{{/times}}
-						</small>
-						<span class="badge badge-pill badge-default float-right">{{this.distance}}</span>
-					</h4>
-					<p class="address">{{this.address}}</p>
-					<div class="facilities">
-						{{#each this.facilities}}
-							<span class="badge badge-warning">{{this}}</span>
-						{{/each}}
-					</div>
+		{{#if locations}}
+		{{#each locations}}
+		<div class="card">
+			<div class="card-block">
+				<h4><a href="/location?id={{this.id}}">{{this.name}}</a>
+					<small>
+						{{#times this.rating}}
+						<i class="fas fa-star"></i>
+						{{/times}}
+
+						{{#times (subtract 5 this.rating)}}
+						<i class="far fa-star"></i>
+						{{/times}}
+					</small>
+					<span class="badge badge-pill badge-default float-right">{{this.distance}}</span>
+				</h4>
+				<p class="address">{{this.address}}</p>
+				<div class="facilities">
+					{{#each this.facilities}}
+					<span class="badge badge-warning">{{this}}</span>
+					{{/each}}
 				</div>
 			</div>
+		</div>
 		{{/each}}
+		{{/if}}
 	</div>
 	<div class="col-12 col-md-4">
 		<p class="lead">Loc8r helps you find places to work when out and about.</p>
