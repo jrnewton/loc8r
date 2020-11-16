@@ -1,0 +1,33 @@
+'use strict';
+
+const db = require('../app_api/models/db');
+
+db.Location.aggregate(
+  [
+    {
+      $geoNear: {
+        near: { type: 'Point', coordinates: [-0.7992599, 51.378091] },
+        distanceField: 'distance.calculated',
+        spherical: true,
+        maxDistance: 20
+      }
+    }
+  ],
+  () => {}
+);
+
+db.Location.aggregate([
+  {
+    $geoNear: {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [-0.7992599, 51.378091]
+        }
+      },
+      distanceField: 'distance.calculated',
+      spherical: true,
+      maxDistance: 20
+    }
+  }
+]);
