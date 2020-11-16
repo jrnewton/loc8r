@@ -19,8 +19,8 @@
 #  --url http://localhost:3000/api/locations
 
 # # locations by geo GET valid
-curl -i --request GET \
-  --url 'http://localhost:3000/api/locationsbygeo?lng=-0.9765342&lat=51.4530871&maxDistance=2000'
+# maxDistance units are meters
+curl -i --request GET --url 'http://localhost:3000/api/locationsbygeo?lng=-0.7992599&lat=51.378091&maxDistance=20000'
 
 # # locations by geo GET invalid
 # curl -i --request GET \
