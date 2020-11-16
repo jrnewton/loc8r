@@ -25,9 +25,10 @@ const homeList = (req, res) => {
   const url = `${runtime.options.serviceRootURL}/api/locationsbygeo`;
   const options = {
     validateStatus: null,
+    //https://www.google.com/maps/dir/51.4524053,-0.9808448/51.455041,-0.9690884/@51.4530871,-0.9765342,17z/data=!4m2!4m1!3e1
     params: {
-      lng: -0.9690884,
-      lat: 51.455041,
+      lng: -0.9765342,
+      lat: 51.4530871,
       maxDistance: 20
     }
   };
