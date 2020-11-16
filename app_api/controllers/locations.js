@@ -44,8 +44,8 @@ const locationsListByDistance = (req, res) => {
     return;
   }
 
-  const maxDistance = parseInt(req.query.maxDistance);
-  if (!validateParam('maxDistance', maxDistance, res)) {
+  const maxDistanceMeters = parseInt(req.query.maxDistance);
+  if (!validateParam('maxDistance', maxDistanceMeters, res)) {
     return;
   }
 
@@ -65,7 +65,8 @@ const locationsListByDistance = (req, res) => {
   const geoOptions = {
     distanceField: 'distance.calculated',
     spherical: true,
-    maxDistance: maxDistance
+    //mongodb stores geo data in meters
+    maxDistance: maxDistanceMeters
     /*  Note: Starting in version 4.2, MongoDB removes the limit 
         and num options for the $geoNear stage as well as the default 
         limit of 100 documents. To limit the results of $geoNear, use 
@@ -114,7 +115,7 @@ const locationsListByDistance = (req, res) => {
             address: result.address,
             rating: result.rating,
             facilities: result.facilities,
-            distance: `${result.distance.calculated.toFixed()}m`
+            distance: result.distance.calculated
           };
         });
         return res.status(200).json(locations);

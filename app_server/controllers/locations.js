@@ -21,15 +21,24 @@ const renderHomepage = (req, res, body) => {
   });
 };
 
+const formatDistance = (distanceMeters) => {
+  let displayDistance = '';
+  if (distanceMeters > 1000) {
+    displayDistance = parseFloat(distanceMeters / 1000).toFixed(1) + 'km';
+  } else {
+    displayDistance = Math.floor(distanceMeters) + 'm';
+  }
+  return displayDistance;
+};
+
 const homeList = (req, res) => {
   const url = `${runtime.options.serviceRootURL}/api/locationsbygeo`;
   const options = {
     validateStatus: null,
-    //https://www.google.com/maps/dir/51.4524053,-0.9808448/51.455041,-0.9690884/@51.4530871,-0.9765342,17z/data=!4m2!4m1!3e1
     params: {
-      lng: -0.9765342,
-      lat: 51.4530871,
-      maxDistance: 20
+      lng: -0.7992599,
+      lat: 51.378091,
+      maxDistance: 20 * 1000 //API uses meters
     }
   };
 
@@ -41,6 +50,10 @@ const homeList = (req, res) => {
     .then((response) => {
       if (response.status === 200) {
         debug('got 200 from the API');
+        response.data.map((item) => {
+          item.distance = formatDistance(item.distance);
+          return item;
+        });
         renderHomepage(req, res, response.data);
       } else {
         debug('got non-200 from the API', response.status);
