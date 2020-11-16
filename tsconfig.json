@@ -4,6 +4,8 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "checkJs": true,
+    //https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html
+    //the following options will get tsc to generate index.d.ts files
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
