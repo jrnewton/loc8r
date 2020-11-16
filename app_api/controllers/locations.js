@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const debug = require('debug')('meanwifi:controllers');
+const debug = require('debug')('meanwifi:api_controllers');
 const db = require('../models/db');
 
 function validateParam(paramName, paramValue, res) {
@@ -74,13 +74,16 @@ const locationsListByDistance = (req, res) => {
   };
 
   const aggOptions = [{ $geoNear: { near, ...geoOptions } }, { $limit: limit }];
-  debug(`locationsListByDistance aggregateOptions=${aggOptions}`);
+  debug(
+    `locationsListByDistance aggregateOptions=${JSON.stringify(aggOptions)}`
+  );
 
   try {
     //Since user input can affect results, return req.query for any status code != 200.
 
     db.Location.aggregate(aggOptions, (error, locations) => {
       if (error) {
+        debug('aggregate returned error', error);
         /* If you pass the entire error object then the error.message property is
             not included in JSON.stringify output.  
             Why? It's type and value doesn't fall into any of the cases where stringify 
@@ -90,10 +93,12 @@ const locationsListByDistance = (req, res) => {
           query: req.query
         });
       } else if (locations.length === 0) {
+        debug('aggregate returned no locations');
         return res.status(404).json({
           query: req.query
         });
       } else {
+        debug('aggregate returned results', locations.length);
         locations = locations.map((result) => {
           //Quick way to return data: return result as-is with one addition
           //to the distance property.  This is quick but returns a lot more data not
@@ -116,6 +121,7 @@ const locationsListByDistance = (req, res) => {
       }
     });
   } catch (error) {
+    debug('caught an error', error);
     return res.status(500).json({
       message: error.message,
       query: req.query

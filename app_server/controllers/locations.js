@@ -1,9 +1,11 @@
 'use strict';
 
-const debug = require('debug')('meanwifi:controllers');
+const debug = require('debug')('meanwifi:app_controllers');
 const model = require('../../app_api/models/static');
 const runtime = require('../../runtime');
-const axios = require('axios');
+/* use '.default' otherwise you'll get a tslint warning
+   see https://github.com/axios/axios/issues/1975 */
+const axios = require('axios').default;
 
 const renderHomepage = (req, res, body) => {
   /* locations-list is locations-list.hbs which is rendered inside of layout.hbs */
@@ -21,23 +23,35 @@ const renderHomepage = (req, res, body) => {
 
 const homeList = (req, res) => {
   const url = `${runtime.options.serviceRootURL}/api/locationsbygeo`;
+  const options = {
+    validateStatus: null,
+    params: {
+      lng: -0.9690884,
+      lat: 51.455041,
+      maxDistance: 20
+    }
+  };
+
+  debug('url', url);
+  debug('options', options);
+
   axios
-    .get(url, {
-      params: {
-        lng: -0.9690884,
-        lat: 51.455041,
-        maxDistance: 200
-      }
-    })
+    .get(url, options)
     .then((response) => {
       if (response.status === 200) {
+        debug('got 200 from the API');
         renderHomepage(req, res, response.data);
       } else {
+        debug('got non-200 from the API', response.status);
         res.status(response.status).json(response.data);
       }
     })
     .catch((error) => {
-      res.status(500).json(error.message);
+      debug('caught an error on request to the API', error.message);
+      if (error.stack) {
+        debug(error.stack);
+      }
+      res.status(500).json(JSON.stringify(error));
     });
 };
 
