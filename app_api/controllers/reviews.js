@@ -15,7 +15,7 @@ function updateAverageRating(location) {
       const total = location.reviews.reduce((accumulator, { rating }) => {
         return accumulator + rating;
       }, 0);
-      avgRating = parseInt(total / count, 10);
+      avgRating = Math.floor(total / count);
     }
     debug(`new avg rating is ${avgRating}`);
 

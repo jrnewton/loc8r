@@ -1,7 +1,6 @@
 'use strict';
 
 const debug = require('debug')('meanwifi:app_controllers');
-const model = require('../../app_api/models/static');
 const runtime = require('../../runtime');
 /* use '.default' otherwise you'll get a tslint warning
    see https://github.com/axios/axios/issues/1975 */
@@ -25,7 +24,7 @@ const renderHomepage = (req, res, body, message) => {
 const formatDistance = (distanceMeters) => {
   let displayDistance = '';
   if (distanceMeters > 1000) {
-    displayDistance = parseFloat(distanceMeters / 1000).toFixed(1) + 'km';
+    displayDistance = (distanceMeters / 1000).toFixed(1) + 'km';
   } else {
     displayDistance = Math.floor(distanceMeters) + 'm';
   }
