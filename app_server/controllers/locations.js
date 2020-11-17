@@ -32,6 +32,16 @@ const formatDistance = (distanceMeters) => {
   return displayDistance;
 };
 
+const renderError = (req, res, error, renderCallback) => {
+  debug('caught an error on request to the API', error.message);
+
+  if (error.stack) {
+    debug(error.stack);
+  }
+
+  renderCallback(req, res, null, `Internal server error ${error.message}`);
+};
+
 const homeList = (req, res) => {
   const url = `${runtime.options.serviceRootURL}/api/locationsbygeo`;
   const options = {
@@ -71,38 +81,50 @@ const homeList = (req, res) => {
       }
     })
     .catch((error) => {
-      debug('caught an error on request to the API', error.message);
-      if (error.stack) {
-        debug(error.stack);
-      }
-
-      renderHomepage(req, res, null, `Internal server error ${error.message}`);
+      renderError(req, res, error, renderHomepage);
     });
+};
+
+const renderLocation = (req, res, location, message) => {
+  res.render('location-info', {
+    title: 'Loc8r - Location Info - ' + location.name,
+    pageHeader: {
+      title: 'Loc8r',
+      tagline: 'Find places to work with wifi near you!'
+    },
+    location: location,
+    gsm_key: process.env.GSM_KEY,
+    message: message
+  });
 };
 
 const locationInfo = (req, res) => {
   const locationId = req.query.id;
-  if (locationId) {
-    debug(`path=${req.path}; location id=${locationId}`);
-    const location = model.locations[locationId];
-    if (location) {
-      res.render('location-info', {
-        title: 'Loc8r - Location Info - ' + location.name,
-        pageHeader: {
-          title: 'Loc8r',
-          tagline: 'Find places to work with wifi near you!'
-        },
-        location: location,
-        gsm_key: process.env.GSM_KEY
-      });
-    } else {
-      console.error(`path=${req.path}; location id ${locationId} not found`);
-      res.status(404).send('Location not found');
-    }
-  } else {
-    console.error(`path=${req.path}; missing location id`);
-    res.status(404).send('Location id required');
-  }
+  debug(`path=${req.path}; location id=${locationId}`);
+
+  const url = `${runtime.options.serviceRootURL}/api/locations/${locationId}`;
+
+  axios
+    .get(url, { validateStatus: null })
+    .then((response) => {
+      if (response.status === 200) {
+        renderLocation(req, res, response.data, null);
+      } else if (response.status === 404) {
+        renderLocation(req, res, null, 'Location not found');
+      } else {
+        debug('got non-200 from the API', response.status);
+
+        let message = '' + response.status;
+        if (response.data.message) {
+          message = message + ': ' + response.data.message;
+        }
+
+        renderLocation(req, res, null, message);
+      }
+    })
+    .catch((error) => {
+      renderError(req, res, error, renderLocation);
+    });
 };
 
 const addReview = (req, res) => {

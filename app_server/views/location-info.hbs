@@ -1,4 +1,4 @@
-<!-- I am rendered inside of layout.hbs --> 
+<!-- I am rendered inside of layout.hbs -->
 
 <div class="row banner">
 	<div class="col-12">
@@ -10,24 +10,24 @@
 	<div class="col-12 col-lg-9">
 		<div class="row">
 			<div class="col-12 col-md-6">
-				
+
 				<p class="rating">
 					{{#times location.rating}}
-						<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
 					{{/times}}
 
 					{{#times (subtract 5 location.rating)}}
-						<i class="far fa-star"></i>
+					<i class="far fa-star"></i>
 					{{/times}}
 				</p>
-				
+
 				<p class="address">{{location.address}}</p>
 
 				<div class="card card-primary">
 					<div class="card-block">
 						<h2 class="card-title">Opening Hours</h2>
 						{{#each location.openingHours}}
-							<p class="card-text">{{this}}</p>
+						<p class="card-text">{{this}}</p>
 						{{/each}}
 					</div>
 				</div>
@@ -35,7 +35,7 @@
 					<div class="card-block">
 						<h2 class="card-title">Facilities</h2>
 						{{#each location.facilities}}
-							<span class="badge badge-warning">{{this}}</span>
+						<span class="badge badge-warning">{{this}}</span>
 						{{/each}}
 					</div>
 				</div>
@@ -44,7 +44,8 @@
 				<div class="card card-primary">
 					<div class="card-block">
 						<h2 class="card-title">Location Map</h2>
-						<img class="img-fluid rounded" src="http://maps.googleapis.com/maps/api/staticmap?center={{location.latLong}}&zoom=17&size=400x350&sensor=false&markers={{location.latLong}}&scale=2&key={{gsm_key}}">
+						<img class="img-fluid rounded"
+							src="http://maps.googleapis.com/maps/api/staticmap?center={{location.latLong}}&zoom=17&size=400x350&sensor=false&markers={{location.latLong}}&scale=2&key={{gsm_key}}">
 					</div>
 				</div>
 			</div>
@@ -56,16 +57,16 @@
 						<a class="btn btn-primary float-right" href="/location/review/new">Add review</a>
 						<h2 class="card-title">Customer Reviews</h2>
 						{{#each location.reviews}}
-							<div class="row review">
+						<div class="row review">
 							<div class="col-12 no-gutters review-header">
 								<span class="rating">
 									<small>
 										{{#times this.rating}}
-											<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
 										{{/times}}
 
 										{{#times (subtract 5 this.rating)}}
-											<i class="far fa-star"></i>
+										<i class="far fa-star"></i>
 										{{/times}}
 									</small>
 								</span>
