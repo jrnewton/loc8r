@@ -6,7 +6,50 @@ const runtime = require('../../runtime');
    see https://github.com/axios/axios/issues/1975 */
 const axios = require('axios').default;
 
+const formatDistance = (distanceMeters) => {
+  let displayDistance = '';
+  if (distanceMeters > 1000) {
+    displayDistance = (distanceMeters / 1000).toFixed(1) + 'km';
+  } else {
+    displayDistance = Math.floor(distanceMeters) + 'm';
+  }
+  return displayDistance;
+};
+
+const getResponseId = (response) => {
+  return `${response.request.method} ${response.request.path}`;
+};
+
+const processResponse = (req, res, response, renderCallback) => {
+  debug(`got ${response.status} from ${getResponseId}`);
+
+  if (response.status === 200) {
+    //when status is 200 response.data will always be a non-empty array
+    renderCallback(req, res, response.data, null);
+  } else {
+    let message = '';
+
+    if (response.status === 404) {
+      message = 'No results found';
+    } else {
+      message = '' + response.status;
+      if (response.data.message) {
+        message = message + ': ' + response.data.message;
+      }
+    }
+
+    renderCallback(req, res, null, message);
+  }
+};
+
 const renderHomepage = (req, res, body, message) => {
+  if (body) {
+    body.map((item) => {
+      item.distance = formatDistance(item.distance);
+      return item;
+    });
+  }
+
   /* locations-list is locations-list.hbs which is rendered inside of layout.hbs */
   res.render('locations-list', {
     title: 'Loc8r - find a place to work with wifi',
@@ -21,72 +64,14 @@ const renderHomepage = (req, res, body, message) => {
   });
 };
 
-const formatDistance = (distanceMeters) => {
-  let displayDistance = '';
-  if (distanceMeters > 1000) {
-    displayDistance = (distanceMeters / 1000).toFixed(1) + 'km';
-  } else {
-    displayDistance = Math.floor(distanceMeters) + 'm';
-  }
-  return displayDistance;
-};
-
-const renderError = (req, res, error, renderCallback) => {
-  debug('caught an error on request to the API', error.message);
-
-  if (error.stack) {
-    debug(error.stack);
+const renderLocationDetail = (req, res, location, message) => {
+  let title = 'Loc8r - Location Info';
+  if (location) {
+    title = `${title} - ${location.name}`;
   }
 
-  renderCallback(req, res, null, `Internal server error ${error.message}`);
-};
-
-const homeList = (req, res) => {
-  const url = `${runtime.options.serviceRootURL}/api/locationsbygeo`;
-  const options = {
-    validateStatus: null,
-    params: {
-      lng: -0.7992599,
-      lat: 51.378091,
-      maxDistance: 20 * 1000 //API uses meters
-    }
-  };
-
-  debug('url', url);
-  debug('options', options);
-
-  axios
-    .get(url, options)
-    .then((response) => {
-      if (response.status === 200) {
-        debug('got 200 from the API');
-        //when status is 200 then data will always be a non-empty array
-        response.data.map((item) => {
-          item.distance = formatDistance(item.distance);
-          return item;
-        });
-        renderHomepage(req, res, response.data, null);
-      } else if (response.status === 404) {
-        renderHomepage(req, res, null, 'No results found');
-      } else {
-        debug('got non-200 from the API', response.status);
-
-        let message = '' + response.status;
-        if (response.data.message) {
-          message = message + ': ' + response.data.message;
-        }
-
-        renderHomepage(req, res, null, message);
-      }
-    })
-    .catch((error) => {
-      renderError(req, res, error, renderHomepage);
-    });
-};
-
-const renderLocation = (req, res, location, message) => {
   res.render('location-info', {
-    title: 'Loc8r - Location Info - ' + location.name,
+    title: title,
     pageHeader: {
       title: 'Loc8r',
       tagline: 'Find places to work with wifi near you!'
@@ -97,32 +82,62 @@ const renderLocation = (req, res, location, message) => {
   });
 };
 
+const renderError = (req, res, error, renderCallback) => {
+  debug(`caught error from ${getResponseId(error.response)}`, error.message);
+
+  if (error.stack) {
+    debug(error.stack);
+  }
+
+  renderCallback(req, res, null, `Internal server error ${error.message}`);
+};
+
+const homeList = (req, res) => {
+  const url = `${runtime.options.serviceRootURL}/api/locationsbygeo`;
+
+  const options = {
+    validateStatus: null,
+    params: {
+      lng: -0.7992599,
+      lat: 51.378091,
+      maxDistance: 20 * 1000 //API uses meters
+    }
+  };
+
+  if (req.query.test === 'true') {
+    options.params.lng = 0;
+    options.params.lat = 0;
+  }
+
+  debug('url', url);
+  debug('options', options);
+
+  const callback = renderHomepage;
+
+  axios
+    .get(url, options)
+    .then((response) => {
+      processResponse(req, res, response, callback);
+    })
+    .catch((error) => {
+      renderError(req, res, error, callback);
+    });
+};
+
 const locationInfo = (req, res) => {
   const locationId = req.query.id;
   debug(`path=${req.path}; location id=${locationId}`);
 
   const url = `${runtime.options.serviceRootURL}/api/locations/${locationId}`;
 
+  const callback = renderLocationDetail;
   axios
     .get(url, { validateStatus: null })
     .then((response) => {
-      if (response.status === 200) {
-        renderLocation(req, res, response.data, null);
-      } else if (response.status === 404) {
-        renderLocation(req, res, null, 'Location not found');
-      } else {
-        debug('got non-200 from the API', response.status);
-
-        let message = '' + response.status;
-        if (response.data.message) {
-          message = message + ': ' + response.data.message;
-        }
-
-        renderLocation(req, res, null, message);
-      }
+      processResponse(req, res, response, callback);
     })
     .catch((error) => {
-      renderError(req, res, error, renderLocation);
+      renderError(req, res, error, callback);
     });
 };
 
