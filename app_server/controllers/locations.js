@@ -24,7 +24,7 @@ const renderHomepage = (req, res, body, message) => {
 const formatDistance = (distanceMeters) => {
   let displayDistance = '';
   if (distanceMeters > 1000) {
-    displayDistance = parseFloat(distanceMeters / 1000).toFixed(1) + 'km';
+    displayDistance = (distanceMeters / 1000).toFixed(1) + 'km';
   } else {
     displayDistance = Math.floor(distanceMeters) + 'm';
   }
