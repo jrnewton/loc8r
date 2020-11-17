@@ -15,7 +15,6 @@
     "node_modules",
     "**/*.d.ts",
     "public/javascripts",
-    "test",
     "scratch",
     ".eslintrc.js"
   ]
