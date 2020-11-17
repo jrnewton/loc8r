@@ -1,7 +1,6 @@
 'use strict';
 
 const debug = require('debug')('meanwifi:app_controllers');
-const model = require('../../app_api/models/static');
 const runtime = require('../../runtime');
 /* use '.default' otherwise you'll get a tslint warning
    see https://github.com/axios/axios/issues/1975 */
