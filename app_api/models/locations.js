@@ -69,8 +69,7 @@ const locationSchema = new mongoose.Schema({
   },
   facilities: [String],
   distance: String,
-  //BUG see #121
-  openingHours: [openingTimeSchema],
+  openingTimes: [openingTimeSchema],
   reviews: [reviewSchema]
 });
 
