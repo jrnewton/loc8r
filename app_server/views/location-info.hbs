@@ -26,8 +26,15 @@
 				<div class="card card-primary">
 					<div class="card-block">
 						<h2 class="card-title">Opening Hours</h2>
-						{{#each location.openingHours}}
-						<p class="card-text">{{this}}</p>
+						{{#each location.openingTimes}}
+						<p class="card-text">
+							{{this.days}}
+							{{#if this.closed}}
+							<span style="font-style: italic;">Closed</span>
+							{{else}}
+							{{this.openingTime}}-{{this.closingTime}}
+							{{/if}}
+						</p>
 						{{/each}}
 					</div>
 				</div>
