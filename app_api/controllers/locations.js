@@ -98,14 +98,17 @@ const locationsListByDistance = (req, res) => {
         if (locations && locations.length > 0) {
           debug('aggregate returned results', locations.length);
           locations = locations.map((result) => {
-            return {
-              id: result._id,
-              name: result.name,
-              address: result.address,
-              rating: result.rating,
-              facilities: result.facilities,
-              distance: result.distance.calculated
-            };
+            result.distance = result.distance.calculated;
+            result.id = result._id;
+            return result;
+            // return {
+            //   id: result._id,
+            //   name: result.name,
+            //   address: result.address,
+            //   rating: result.rating,
+            //   facilities: result.facilities,
+            //   distance: result.distance.calculated
+            // };
           });
           return res.status(200).json(locations);
         } else {
