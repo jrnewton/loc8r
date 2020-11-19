@@ -19,7 +19,7 @@ Live demo: http://meanwifi.herokuapp.com/
 
 ## Additional dependencies
 
-- [serve-favicon](https://www.npmjs.com/package/serve-favicon) for serving up [favicon.ico](public/favicon.ico). Browsers request it, and I like seeing a clean set of responses from Express.
+- [serve-favicon](https://www.npmjs.com/package/serve-favicon) for serving up [favicon.ico](assets/favicon.ico). Browsers request it, and I like seeing a clean set of responses from Express.
 - [handlebars](https://www.npmjs.com/package/hbs) for UI templating. The module linked is 'hbs' which is the Express view engine, which in turn uses the 'handlebars' template engine. The book uses pug but I really don't care for it's syntax preferring a library that sticks with small HTML friendly formatting. I wrote [a few hbs helper routines](hbs-helpers.js) used to output the star rating icons.
 - [luxon](https://www.npmjs.com/package/luxon) for date formatting on the frontend. The book wrote a simple routine by hand but I'd rather not reinvent that wheel. Luxon was [recommended by Moment](https://momentjs.com/docs/#/-project-status/) as a modern alternative.
 

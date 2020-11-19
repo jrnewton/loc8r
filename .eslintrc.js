@@ -16,7 +16,7 @@ module.exports = {
   },
   plugins: ['prettier'],
   ignorePatterns: [
-    'public/javascripts/*.js' /* third party stuff */,
+    'static/javascripts/*.js' /* third party stuff */,
     'scratch',
     '.eslintrc.js' /* ignore self */
   ]
