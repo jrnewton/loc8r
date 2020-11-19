@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "start": "node server.js",
     "debug": "DEBUG=meanwifi:* nodemon",
-    "kill-node": "ps -ef | grep \"node \" | grep -v \"grep\" | awk '{print $2}' | xargs kill"
+    "kill-node": "ps -ef | grep \"node \" | grep -v \"grep\" | awk '{print $2}' | xargs kill",
+    "prod-restart": "heroku restart -a meanwifi",
+    "prod-log-tail": "heroku logs -tail -a meanwifi"
   },
   "repository": {
     "type": "git",
