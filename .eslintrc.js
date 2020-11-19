@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   env: {
     commonjs: true,
@@ -14,10 +16,5 @@ module.exports = {
     'semi': 'error',
     'prettier/prettier': 'error'
   },
-  plugins: ['prettier'],
-  ignorePatterns: [
-    'static/javascripts/*.js' /* third party stuff */,
-    'scratch',
-    '.eslintrc.js' /* ignore self */
-  ]
+  plugins: ['prettier']
 };
