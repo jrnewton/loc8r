@@ -1,6 +1,6 @@
 [![lint](https://github.com/jrnewton/meanwifi/workflows/lint/badge.svg)](https://github.com/jrnewton/meanwifi/actions?query=workflow%3Alint) [![CodeQL](https://github.com/jrnewton/meanwifi/workflows/CodeQL/badge.svg)](https://github.com/jrnewton/meanwifi/actions?query=workflow%3ACodeQL)
 
-# Example App using the MEAN stack
+# Example App using the ~~MEAN~~ MEVN stack
 
 The Loc8r App lists nearby places with Wi-Fi where people can go to get some work done. It is being built following the _[Getting MEAN](https://www.manning.com/books/getting-mean-with-mongo-express-angular-and-node)_ book from Manning.
 
@@ -10,8 +10,9 @@ Live demo: http://meanwifi.herokuapp.com/
 
 [Blog covering this project](https://www.3plb.com)
 
-## Differences between book code and this app
+## Differences between book code and this code
 
+- Vue 3 instead of Angular
 - Handlebars for UI templating instead of pug. See below.
 - Use Mongoose.createConnection instead of default global connection.
 - app and db code are structured a bit different to allow for Mocha to do cleanup at end of test run.
