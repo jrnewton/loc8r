@@ -1,5 +1,13 @@
 <!-- I am rendered inside of layout.hbs -->
+{{#if message }}
+<div class="row banner">
+	<div class="col-12">
+		<h4 id="message">{{ message }}</h4>
+	</div>
+</div>
+{{/if}}
 
+{{#if location}}
 <div class="row banner">
 	<div class="col-12">
 		<h1>{{location.name}}</h1>
@@ -10,7 +18,6 @@
 	<div class="col-12 col-lg-9">
 		<div class="row">
 			<div class="col-12 col-md-6">
-
 				<p class="rating">
 					{{#times location.rating}}
 					<i class="fas fa-star"></i>
@@ -63,6 +70,8 @@
 					<div class="card-block">
 						<a class="btn btn-primary float-right" href="/location/review/new">Add review</a>
 						<h2 class="card-title">Customer Reviews</h2>
+
+						{{#if location.reviews}}
 						{{#each location.reviews}}
 						<div class="row review">
 							<div class="col-12 no-gutters review-header">
@@ -85,6 +94,9 @@
 							</div>
 						</div>
 						{{/each}}
+						{{else}}
+						There are no reviews yet. Add your own!
+						{{/if}}
 					</div>
 				</div>
 			</div>
@@ -95,3 +107,4 @@
 		<p>If you've been and you like it - or if you don't - please leave a review to help other people just like you.</p>
 	</div>
 </div>
+{{/if}}
