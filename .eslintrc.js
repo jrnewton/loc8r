@@ -7,14 +7,14 @@ module.exports = {
   },
   /* eslint:recommended property enables rules that report common problems 
        See the list at https://eslint.org/docs/rules/ */
-  extends: 'eslint:recommended',
-  parserOptions: {
-    ecmaVersion: 11
-  },
+  /* eslint/prettier integration read https://bit.ly/3kQFe3u */
+  extends: ['eslint:recommended', 'prettier'],
   rules: {
-    strict: 'error',
-    semi: 'error'
+    'strict': 'error',
+    'semi': 'error',
+    'prettier/prettier': 'error'
   },
+  plugins: ['prettier'],
   ignorePatterns: [
     'public/javascripts/*.js' /* third party stuff */,
     'scratch',
