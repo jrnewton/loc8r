@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "start": "node ./src/server.js",
     "debug": "DEBUG=meanwifi:* nodemon",
+    "debug-sync-usage": "DEBUG=meanwifi:* nodemon --trace-sync-io ./src/server.js",
     "kill-node": "ps -ef | grep \"node \" | grep -v \"grep\" | awk '{print $2}' | xargs kill",
     "prod-restart": "heroku restart -a meanwifi",
     "prod-log-tail": "heroku logs -tail -a meanwifi"
