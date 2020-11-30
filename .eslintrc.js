@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'strict': 'error',
     'semi': 'error',
+    'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
     'prettier/prettier': 'error'
   },
   plugins: ['prettier']
