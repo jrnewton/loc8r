@@ -37,18 +37,19 @@ app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  const error = createError(404);
+  next(error);
 });
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+  const statusMessage = (err.status || 500) + ': ' + err.message;
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {
+    title: statusMessage,
+    message: statusMessage,
+    error: req.app.get('env') === 'development' ? err : {}
+  });
 });
 
 app.ready = db.ready;
