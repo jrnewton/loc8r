@@ -29,10 +29,10 @@ const main = () => {
     console.log('setTimeout callback after', t1, 'ms');
   }, t1);
 
-  let t2 = Math.random() * 1000;
-  setInterval(() => { 
-    console.log('setInterval callback after', t2, 'ms');
-  }, t2);
+  // let t2 = Math.random() * 1000;
+  // setInterval(() => { 
+  //   console.log('setInterval callback after', t2, 'ms');
+  // }, t2);
 
   setImmediate(() => { 
     console.log('setImmediate callback');
