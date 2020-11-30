@@ -1,7 +1,7 @@
 'use strict';
 
 const debug = require('debug')('meanwifi:app_controllers');
-const service = require('../services/location-service');
+const service = require('../services/location-services');
 
 const formatDistance = (distanceMeters) => {
   let displayDistance = '';

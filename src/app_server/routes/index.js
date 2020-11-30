@@ -1,7 +1,7 @@
 'use strict';
 
-const ctrlLocations = require('../controllers/locations');
-const ctrlOthers = require('../controllers/others');
+const ctrlLocations = require('../controllers/location-controllers');
+const ctrlOthers = require('../controllers/other-controllers');
 const express = require('express');
 const router = express.Router();
 

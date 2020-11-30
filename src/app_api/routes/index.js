@@ -4,8 +4,8 @@ const express = require('express');
 const router = express.Router();
 
 const runtime = require('../../runtime');
-const ctrlLocations = require('../controllers/locations');
-const ctrlReviews = require('../controllers/reviews');
+const ctrlLocations = require('../controllers/location-controllers');
+const ctrlReviews = require('../controllers/review-controllers');
 
 const locListGeoRoute = router.route('/locationsbygeo');
 locListGeoRoute.get(ctrlLocations.locationsListByDistance);
