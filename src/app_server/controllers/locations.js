@@ -21,7 +21,7 @@ const getResponseId = (response) => {
 };
 
 const processResponse = (req, res, response, renderCallback) => {
-  debug(`got ${response.status} from ${getResponseId}`);
+  debug(`got ${response.status} from ${getResponseId(response)}`);
 
   if (response.status === 200) {
     //when status is 200 response.data will always be a non-empty array
