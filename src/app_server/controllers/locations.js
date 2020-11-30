@@ -1,10 +1,7 @@
 'use strict';
 
 const debug = require('debug')('meanwifi:app_controllers');
-const runtime = require('../../runtime');
-/* use '.default' otherwise you'll get a tslint warning
-   see https://github.com/axios/axios/issues/1975 */
-const axios = require('axios').default;
+const service = require('../services/location-service');
 
 const formatDistance = (distanceMeters) => {
   let displayDistance = '';
@@ -16,38 +13,30 @@ const formatDistance = (distanceMeters) => {
   return displayDistance;
 };
 
-const getAPIResponseId = (response) => {
-  return `${response.request.method} ${response.request.path}`;
-};
+const homeList = async (req, res) => {
+  let locations = null;
+  let message = null;
 
-const processAPIResponse = (req, res, apiResponse, renderCallback) => {
-  debug(`got ${apiResponse.status} from ${getAPIResponseId(apiResponse)}`);
-
-  if (apiResponse.status === 200) {
-    //when status is 200 response.data will always be a non-empty array
-    renderCallback(req, res, apiResponse.data, null);
-  } else {
-    let message = '';
-
-    if (apiResponse.status === 404) {
-      message = 'No results found';
-    } else {
-      message = '' + apiResponse.status;
-      if (apiResponse.data.message) {
-        message = message + ': ' + apiResponse.data.message;
-      }
-    }
-
-    renderCallback(req, res, null, message);
+  try {
+    locations = await service.getLocationList(
+      {
+        lng: -0.7992599,
+        lat: 51.378091,
+        maxDistance: 20 * 1000 //API uses meters
+      },
+      req.query.test
+    );
+  } catch (error) {
+    message = error.message;
   }
-};
 
-const renderHomepage = (req, res, apiResponseBody, message) => {
-  if (apiResponseBody) {
-    apiResponseBody.map((item) => {
+  if (locations) {
+    locations.map((item) => {
       item.distance = formatDistance(item.distance);
       return item;
     });
+  } else {
+    message = 'Sorry but there are no locations near you';
   }
 
   /* locations-list is locations-list.hbs which is rendered inside of layout.hbs */
@@ -59,15 +48,30 @@ const renderHomepage = (req, res, apiResponseBody, message) => {
       tagline: 'Find places to work with wifi near you!'
     },
 
-    locations: apiResponseBody,
+    locations: locations,
     message: message
   });
 };
 
-const renderLocationDetail = (req, res, location, message) => {
+const locationInfo = async (req, res) => {
+  const locationId = req.query.id;
+  debug(`path=${req.path}; location id=${locationId}`);
+
+  let location = null;
+  let message = null;
+
+  try {
+    location = await service.getSingleLocation(locationId);
+  } catch (error) {
+    message = error;
+  }
+
   let title = 'Loc8r - Location Info';
   if (location) {
     title = `${title} - ${location.name}`;
+  } else {
+    title = '404 not found';
+    message = '404 not found';
   }
 
   res.render('location-info', {
@@ -80,68 +84,6 @@ const renderLocationDetail = (req, res, location, message) => {
     gsm_key: process.env.GSM_KEY,
     message: message
   });
-};
-
-const processAPIError = (req, res, apiError, renderCallback) => {
-  debug(
-    `caught error from ${getAPIResponseId(apiError.response)}`,
-    apiError.message
-  );
-
-  if (apiError.stack) {
-    debug(apiError.stack);
-  }
-
-  renderCallback(req, res, null, `Internal server error ${apiError.message}`);
-};
-
-const homeList = (req, res) => {
-  const url = `${runtime.options.serviceRootURL}/api/locationsbygeo`;
-
-  const options = {
-    validateStatus: null,
-    params: {
-      lng: -0.7992599,
-      lat: 51.378091,
-      maxDistance: 20 * 1000 //API uses meters
-    }
-  };
-
-  if (req.query.test === 'true') {
-    options.params.lng = 0;
-    options.params.lat = 0;
-  }
-
-  debug('url', url);
-  debug('options', options);
-
-  const callback = renderHomepage;
-
-  axios
-    .get(url, options)
-    .then((apiResponse) => {
-      processAPIResponse(req, res, apiResponse, callback);
-    })
-    .catch((apiError) => {
-      processAPIError(req, res, apiError, callback);
-    });
-};
-
-const locationInfo = (req, res) => {
-  const locationId = req.query.id;
-  debug(`path=${req.path}; location id=${locationId}`);
-
-  const url = `${runtime.options.serviceRootURL}/api/locations/${locationId}`;
-
-  const callback = renderLocationDetail;
-  axios
-    .get(url, { validateStatus: null })
-    .then((apiResponse) => {
-      processAPIResponse(req, res, apiResponse, callback);
-    })
-    .catch((apiError) => {
-      processAPIError(req, res, apiError, callback);
-    });
 };
 
 const addReview = (req, res) => {
