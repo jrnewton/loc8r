@@ -16,25 +16,25 @@ const formatDistance = (distanceMeters) => {
   return displayDistance;
 };
 
-const getResponseId = (response) => {
+const getAPIResponseId = (response) => {
   return `${response.request.method} ${response.request.path}`;
 };
 
-const processResponse = (req, res, response, renderCallback) => {
-  debug(`got ${response.status} from ${getResponseId(response)}`);
+const processAPIResponse = (req, res, apiResponse, renderCallback) => {
+  debug(`got ${apiResponse.status} from ${getAPIResponseId(apiResponse)}`);
 
-  if (response.status === 200) {
+  if (apiResponse.status === 200) {
     //when status is 200 response.data will always be a non-empty array
-    renderCallback(req, res, response.data, null);
+    renderCallback(req, res, apiResponse.data, null);
   } else {
     let message = '';
 
-    if (response.status === 404) {
+    if (apiResponse.status === 404) {
       message = 'No results found';
     } else {
-      message = '' + response.status;
-      if (response.data.message) {
-        message = message + ': ' + response.data.message;
+      message = '' + apiResponse.status;
+      if (apiResponse.data.message) {
+        message = message + ': ' + apiResponse.data.message;
       }
     }
 
@@ -42,9 +42,9 @@ const processResponse = (req, res, response, renderCallback) => {
   }
 };
 
-const renderHomepage = (req, res, body, message) => {
-  if (body) {
-    body.map((item) => {
+const renderHomepage = (req, res, apiResponseBody, message) => {
+  if (apiResponseBody) {
+    apiResponseBody.map((item) => {
       item.distance = formatDistance(item.distance);
       return item;
     });
@@ -59,7 +59,7 @@ const renderHomepage = (req, res, body, message) => {
       tagline: 'Find places to work with wifi near you!'
     },
 
-    locations: body,
+    locations: apiResponseBody,
     message: message
   });
 };
@@ -82,14 +82,17 @@ const renderLocationDetail = (req, res, location, message) => {
   });
 };
 
-const renderError = (req, res, error, renderCallback) => {
-  debug(`caught error from ${getResponseId(error.response)}`, error.message);
+const processAPIError = (req, res, apiError, renderCallback) => {
+  debug(
+    `caught error from ${getAPIResponseId(apiError.response)}`,
+    apiError.message
+  );
 
-  if (error.stack) {
-    debug(error.stack);
+  if (apiError.stack) {
+    debug(apiError.stack);
   }
 
-  renderCallback(req, res, null, `Internal server error ${error.message}`);
+  renderCallback(req, res, null, `Internal server error ${apiError.message}`);
 };
 
 const homeList = (req, res) => {
@@ -116,11 +119,11 @@ const homeList = (req, res) => {
 
   axios
     .get(url, options)
-    .then((response) => {
-      processResponse(req, res, response, callback);
+    .then((apiResponse) => {
+      processAPIResponse(req, res, apiResponse, callback);
     })
-    .catch((error) => {
-      renderError(req, res, error, callback);
+    .catch((apiError) => {
+      processAPIError(req, res, apiError, callback);
     });
 };
 
@@ -133,11 +136,11 @@ const locationInfo = (req, res) => {
   const callback = renderLocationDetail;
   axios
     .get(url, { validateStatus: null })
-    .then((response) => {
-      processResponse(req, res, response, callback);
+    .then((apiResponse) => {
+      processAPIResponse(req, res, apiResponse, callback);
     })
-    .catch((error) => {
-      renderError(req, res, error, callback);
+    .catch((apiError) => {
+      processAPIError(req, res, apiError, callback);
     });
 };
 
