@@ -78,7 +78,21 @@ const getSingleLocation = async (locationId) => {
   }
 };
 
+const addReview = async (locationId, review) => {
+  debug(`location id=${locationId}`);
+
+  const url = `${runtime.options.serviceRootURL}/api/locations/${locationId}/reviews`;
+
+  try {
+    const apiResponse = await axios.post(url, review, { validateStatus: null });
+    return processResponse(apiResponse);
+  } catch (error) {
+    processError(error);
+  }
+};
+
 module.exports = {
   getLocationList,
-  getSingleLocation
+  getSingleLocation,
+  addReview
 };

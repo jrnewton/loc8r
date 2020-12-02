@@ -9,6 +9,7 @@ const router = express.Router();
 router.get('/', ctrlLocations.homeList);
 router.get('/location', ctrlLocations.locationInfo);
 router.get('/location/review/new', ctrlLocations.addReview);
+router.post('/location/review/new', ctrlLocations.saveReview);
 
 router.get('/about', ctrlOthers.about);
 router.get('/test', ctrlOthers.test);

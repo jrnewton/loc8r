@@ -1,110 +1,110 @@
 <!-- I am rendered inside of layout.hbs -->
 {{#if message }}
 <div class="row banner">
-	<div class="col-12">
-		<h4 id="message">{{ message }}</h4>
-	</div>
+  <div class="col-12">
+    <h4 id="message">{{ message }}</h4>
+  </div>
 </div>
 {{/if}}
 
 {{#if location}}
 <div class="row banner">
-	<div class="col-12">
-		<h1>{{location.name}}</h1>
-	</div>
+  <div class="col-12">
+    <h1>{{location.name}}</h1>
+  </div>
 </div>
 
 <div class="row">
-	<div class="col-12 col-lg-9">
-		<div class="row">
-			<div class="col-12 col-md-6">
-				<p class="rating">
-					{{#times location.rating}}
-					<i class="fas fa-star"></i>
-					{{/times}}
+  <div class="col-12 col-lg-9">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <p class="rating">
+          {{#times location.rating}}
+          <i class="fas fa-star"></i>
+          {{/times}}
 
-					{{#times (subtract 5 location.rating)}}
-					<i class="far fa-star"></i>
-					{{/times}}
-				</p>
+          {{#times (subtract 5 location.rating)}}
+          <i class="far fa-star"></i>
+          {{/times}}
+        </p>
 
-				<p class="address">{{location.address}}</p>
+        <p class="address">{{location.address}}</p>
 
-				<div class="card card-primary">
-					<div class="card-block">
-						<h2 class="card-title">Opening Hours</h2>
-						{{#each location.openingTimes}}
-						<p class="card-text">
-							{{this.days}}
-							{{#if this.closed}}
-							<span style="font-style: italic;">Closed</span>
-							{{else}}
-							{{this.openingTime}}-{{this.closingTime}}
-							{{/if}}
-						</p>
-						{{/each}}
-					</div>
-				</div>
-				<div class="card card-primary">
-					<div class="card-block">
-						<h2 class="card-title">Facilities</h2>
-						{{#each location.facilities}}
-						<span class="badge badge-warning">{{this}}</span>
-						{{/each}}
-					</div>
-				</div>
-			</div>
-			<div class="col-12 col-md-6 location-map">
-				<div class="card card-primary">
-					<div class="card-block">
-						<h2 class="card-title">Location Map</h2>
-						<img class="img-fluid rounded"
-							src="http://maps.googleapis.com/maps/api/staticmap?center={{location.latLong}}&zoom=17&size=400x350&sensor=false&markers={{location.latLong}}&scale=2&key={{gsm_key}}">
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12">
-				<div class="card card-primary review-card">
-					<div class="card-block">
-						<a class="btn btn-primary float-right" href="/location/review/new">Add review</a>
-						<h2 class="card-title">Customer Reviews</h2>
+        <div class="card card-primary">
+          <div class="card-block">
+            <h2 class="card-title">Opening Hours</h2>
+            {{#each location.openingTimes}}
+            <p class="card-text">
+              {{this.days}}
+              {{#if this.closed}}
+              <span style="font-style: italic;">Closed</span>
+              {{else}}
+              {{this.openingTime}}-{{this.closingTime}}
+              {{/if}}
+            </p>
+            {{/each}}
+          </div>
+        </div>
+        <div class="card card-primary">
+          <div class="card-block">
+            <h2 class="card-title">Facilities</h2>
+            {{#each location.facilities}}
+            <span class="badge badge-warning">{{this}}</span>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 location-map">
+        <div class="card card-primary">
+          <div class="card-block">
+            <h2 class="card-title">Location Map</h2>
+            <img class="img-fluid rounded"
+              src="http://maps.googleapis.com/maps/api/staticmap?center={{location.latLong}}&zoom=17&size=400x350&sensor=false&markers={{location.latLong}}&scale=2&key={{gsm_key}}">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-primary review-card">
+          <div class="card-block">
+            <a class="btn btn-primary float-right" href="/location/review/new?id={{location._id}}">Add review</a>
+            <h2 class="card-title">Customer Reviews</h2>
 
-						{{#if location.reviews}}
-						{{#each location.reviews}}
-						<div class="row review">
-							<div class="col-12 no-gutters review-header">
-								<span class="rating">
-									<small>
-										{{#times this.rating}}
-										<i class="fas fa-star"></i>
-										{{/times}}
+            {{#if location.reviews}}
+            {{#each location.reviews}}
+            <div class="row review">
+              <div class="col-12 no-gutters review-header">
+                <span class="rating">
+                  <small>
+                    {{#times this.rating}}
+                    <i class="fas fa-star"></i>
+                    {{/times}}
 
-										{{#times (subtract 5 this.rating)}}
-										<i class="far fa-star"></i>
-										{{/times}}
-									</small>
-								</span>
-								<span class="reviewAuthor">{{this.author}}</span>
-								<small class="reviewTimestamp">{{formatDate this.createdOn}}</small>
-							</div>
-							<div class="col-12">
-								<p>{{this.text}}</p>
-							</div>
-						</div>
-						{{/each}}
-						{{else}}
-						There are no reviews yet. Add your own!
-						{{/if}}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-12 col-lg-3">
-		<p class="lead">{{location.reviewLead}}</p>
-		<p>If you've been and you like it - or if you don't - please leave a review to help other people just like you.</p>
-	</div>
+                    {{#times (subtract 5 this.rating)}}
+                    <i class="far fa-star"></i>
+                    {{/times}}
+                  </small>
+                </span>
+                <span class="reviewAuthor">{{this.author}}</span>
+                <small class="reviewTimestamp">{{formatDate this.createdOn}}</small>
+              </div>
+              <div class="col-12">
+                <p>{{this.text}}</p>
+              </div>
+            </div>
+            {{/each}}
+            {{else}}
+            There are no reviews yet. Add your own!
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-3">
+    <p class="lead">{{location.reviewLead}}</p>
+    <p>If you've been and you like it - or if you don't - please leave a review to help other people just like you.</p>
+  </div>
 </div>
 {{/if}}

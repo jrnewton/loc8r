@@ -87,11 +87,48 @@ const locationInfo = async (req, res) => {
 };
 
 const addReview = (req, res) => {
-  res.render('location-review', { title: 'Loc8r - Add Review' });
+  res.render('location-review', {
+    title: 'Loc8r - Add a Review',
+    pageHeader: {
+      title: 'Add a Review'
+    },
+    id: req.query.id
+  });
+};
+
+const saveReview = async (req, res) => {
+  let { id, name, rating, text } = req.body;
+
+  debug(`path=${req.path}; location id=${id}`);
+
+  let review = {
+    author: name,
+    rating: rating,
+    reviewText: text
+  };
+
+  let message = null;
+
+  try {
+    review = await service.addReview(id, review);
+  } catch (error) {
+    message = error;
+  }
+
+  res.render('location-review', {
+    title: 'Loc8r - Thanks for submitting a Review!',
+    pageHeader: {
+      title: 'Thanks!'
+    },
+    id: req.query.id,
+    review: review,
+    message: message
+  });
 };
 
 module.exports = {
   homeList,
   locationInfo,
-  addReview
+  addReview,
+  saveReview
 };
