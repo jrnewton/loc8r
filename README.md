@@ -29,3 +29,4 @@ Live demo: http://meanwifi.herokuapp.com/
 - [mocha](https://www.npmjs.com/package/mocha) and [supertest](https://www.npmjs.com/package/supertest) for testing. See [test](test) for the small set. Right now I've got integration tests of the API service but will expand unit tests once some of the code is factored more. The book didn't cover testing but I like having tests sooner than later when developing.
 - [eslint](https://www.npmjs.com/package/eslint) to ensure my Javascript code is proper and safe. Configuration is done in [.eslintrc.js](.eslintrc.js). I'm very much looking forward to moving to Typescript.
 - [typescript](https://www.npmjs.com/package/typescript), various type definitions and a [tsconfig](https://github.com/jrnewton/meanwifi/blob/main/tsconfig.json) to enable type checking in VSCode and cli.
+
