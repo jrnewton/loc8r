@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const debug = require('debug')('meanwifi:api_controllers');
+const debug = require('debug')('loc8r:api_controllers');
 const db = require('../models/db');
 
 function updateAverageRating(location) {

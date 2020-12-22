@@ -1,6 +1,6 @@
 'use strict';
 
-//const debug = require('debug')('meanwifi:hbs-helpers');
+//const debug = require('debug')('loc8r:hbs-helpers');
 const hbs = require('hbs');
 const { DateTime } = require('luxon');
 

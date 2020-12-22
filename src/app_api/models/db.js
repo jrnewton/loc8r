@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('meanwifi:models');
+const debug = require('debug')('loc8r:models');
 const mongoose = require('mongoose');
 const dbURI = require('../../runtime').options.dbURI;
 

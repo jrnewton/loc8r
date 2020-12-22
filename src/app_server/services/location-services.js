@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('meanwifi:app_services');
+const debug = require('debug')('loc8r:app_services');
 const runtime = require('../../runtime');
 /* use '.default' otherwise you'll get a tslint warning
    see https://github.com/axios/axios/issues/1975 */

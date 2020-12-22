@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('meanwifi:tests');
+const debug = require('debug')('loc8r:tests');
 const supertest = require('supertest');
 const app = require('../src/app');
 let request = supertest(app);

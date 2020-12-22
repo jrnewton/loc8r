@@ -1,10 +1,10 @@
-[![lint](https://github.com/jrnewton/meanwifi/workflows/lint/badge.svg)](https://github.com/jrnewton/meanwifi/actions?query=workflow%3Alint) [![CodeQL](https://github.com/jrnewton/meanwifi/workflows/CodeQL/badge.svg)](https://github.com/jrnewton/meanwifi/actions?query=workflow%3ACodeQL)
+[![lint](https://github.com/jrnewton/loc8r/workflows/lint/badge.svg)](https://github.com/jrnewton/loc8tor/actions?query=workflow%3Alint) [![CodeQL](https://github.com/jrnewton/loc8r/workflows/CodeQL/badge.svg)](https://github.com/jrnewton/loc8r/actions?query=workflow%3ACodeQL)
 
 # Example App using the ~~MEAN~~ MEVN stack
 
 The Loc8r App lists nearby places with Wi-Fi where people can go to get some work done. It is being built following the _[Getting MEAN](https://www.manning.com/books/getting-mean-with-mongo-express-angular-and-node)_ book from Manning.
 
-Live demo: http://meanwifi.herokuapp.com/
+Live demo: http://loc8r-wifi.herokuapp.com/
 
 [Errata and notes on the book](ERRATA.md)
 
@@ -28,5 +28,4 @@ Live demo: http://meanwifi.herokuapp.com/
 
 - [mocha](https://www.npmjs.com/package/mocha) and [supertest](https://www.npmjs.com/package/supertest) for testing. See [test](test) for the small set. Right now I've got integration tests of the API service but will expand unit tests once some of the code is factored more. The book didn't cover testing but I like having tests sooner than later when developing.
 - [eslint](https://www.npmjs.com/package/eslint) to ensure my Javascript code is proper and safe. Configuration is done in [.eslintrc.js](.eslintrc.js). I'm very much looking forward to moving to Typescript.
-- [typescript](https://www.npmjs.com/package/typescript), various type definitions and a [tsconfig](https://github.com/jrnewton/meanwifi/blob/main/tsconfig.json) to enable type checking in VSCode and cli.
-
+- [typescript](https://www.npmjs.com/package/typescript), various type definitions and a [tsconfig](https://github.com/jrnewton/loc8r/blob/main/tsconfig.json) to enable type checking in VSCode and cli.

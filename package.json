@@ -1,27 +1,27 @@
 {
-  "name": "meanwifi",
+  "name": "loc8r",
   "version": "0.0.1",
   "private": true,
   "main": "./src/server.js",
   "scripts": {
-    "test": "DEBUG=meanwifi:tests mocha",
+    "test": "DEBUG=loc8r:tests mocha",
     "types": "tsc",
     "lint": "eslint .",
     "start": "node ./src/server.js",
-    "debug": "DEBUG=meanwifi:* nodemon",
-    "debug-sync-usage": "DEBUG=meanwifi:* nodemon --trace-sync-io ./src/server.js",
+    "debug": "DEBUG=loc8r:* nodemon",
+    "debug-sync-usage": "DEBUG=loc8r:* nodemon --trace-sync-io ./src/server.js",
     "kill-node": "ps -ef | grep \"node \" | grep -v \"grep\" | awk '{print $2}' | xargs kill",
-    "prod-restart": "heroku restart -a meanwifi",
-    "prod-log-tail": "heroku logs -tail -a meanwifi"
+    "prod-restart": "heroku restart -a loc8r-wifi",
+    "prod-log-tail": "heroku logs -tail -a loc8r-wifi"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jrnewton/meanwifi.git"
+    "url": "git+https://github.com/jrnewton/loc8r.git"
   },
   "author": "Jon Newton",
   "license": "GPLv3",
   "bugs": {
-    "url": "https://github.com/jrnewton/meanwifi/issues"
+    "url": "https://github.com/jrnewton/loc8r/issues"
   },
   "engines": {
     "node": ">=14.0.0",

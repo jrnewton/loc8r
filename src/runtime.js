@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('meanwifi:server');
+const debug = require('debug')('loc8r:server');
 
 let dbURI = 'mongodb://localhost/loc8r';
 let readOnly = false;

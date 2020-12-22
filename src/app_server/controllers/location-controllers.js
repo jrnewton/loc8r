@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('meanwifi:app_controllers');
+const debug = require('debug')('loc8r:app_controllers');
 const service = require('../services/location-services');
 
 const formatDistance = (distanceMeters) => {
